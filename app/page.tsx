@@ -147,42 +147,6 @@ const TypewriterText = ({
   );
 };
 
-const SectionWrapper = ({
-  children,
-  index,
-}: {
-  children: React.ReactNode;
-  index: number;
-}) => (
-  <div
-    className={`
-      group relative
-      rounded-2xl
-      bg-gray-900
-      shadow-xl
-      transition-all
-      duration-500
-      border border-gray-800
-      overflow-hidden
-      z-[${10 - index}]
-      lg:w-4/5
-      mx-auto
-      ${index % 2 === 0 ? "lg:translate-x-8" : "lg:-translate-x-8"}
-      ${index > 0 ? "lg:-mt-32" : ""}
-      hover:lg:-translate-y-4
-      hover:lg:scale-105
-      hover:lg:shadow-2xl
-      hover:lg:border-teal-400
-    `}
-    style={{
-      boxShadow:
-        "0 8px 32px 0 rgba(31, 38, 135, 0.37), 0 1.5px 6px 0 rgba(20,184,166,0.15)",
-    }}
-  >
-    {children}
-  </div>
-);
-
 // Component pour l'effet de mouse spotlight
 const MouseSpotlight = ({ isDarkMode }: { isDarkMode: boolean }) => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -221,6 +185,7 @@ const Portfolio = () => {
   const [currentSection, setCurrentSection] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [scrollY, setScrollY] = useState(0);
   const [showTypewriter, setShowTypewriter] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -231,6 +196,18 @@ const Portfolio = () => {
       setTimeout(() => setShowTypewriter(true), 500);
     }, 2000);
     return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    if (typeof window !== "undefined") {
+      window.addEventListener("scroll", handleScroll);
+    }
+    return () => {
+      if (typeof window !== "undefined") {
+        window.removeEventListener("scroll", handleScroll);
+      }
+    };
   }, []);
 
   const themeClasses = {
@@ -403,7 +380,7 @@ const Portfolio = () => {
         <div
           className="w-full h-full bg-gradient-to-br from-teal-400 to-blue-600 transform scale-110"
           style={{
-            transform: `translateY(${-window.scrollY * 0.5}px) scale(1.1)`,
+            transform: `translateY(${-scrollY * 0.5}px) scale(1.1)`,
           }}
         />
       </div>
@@ -457,7 +434,7 @@ const Portfolio = () => {
               <div className="mt-4">
                 <h2 className="text-2xl font-light uppercase tracking-widest mb-6 group">
                   <span className="bg-gradient-to-r from-teal-400 to-blue-600 bg-clip-text text-transparent group-hover:from-blue-600 group-hover:to-teal-400 transition-all duration-500">
-                    My Biography
+                    About Me
                   </span>
                 </h2>
                 <div
@@ -465,19 +442,6 @@ const Portfolio = () => {
                     isDarkMode ? "bg-teal-400" : "bg-teal-600"
                   } mb-8 transform origin-left scale-x-0 animate-scale-x`}
                 ></div>
-                <div
-                  className={`space-y-4 text-sm ${themeClasses.textSecondary} leading-relaxed`}
-                >
-                  {["About Me", "Reviews", "The Next Project", "My Events"].map(
-                    (item, index) => (
-                      <FadeInSection key={item} delay={index * 100}>
-                        <p className="hover:text-teal-400 transition-colors duration-300 cursor-pointer transform hover:translate-x-2">
-                          {item}
-                        </p>
-                      </FadeInSection>
-                    )
-                  )}
-                </div>
               </div>
             </div>
           </SlideInLeft>
@@ -798,18 +762,12 @@ const Portfolio = () => {
             {sectionComponents[currentSection]}
           </div>
         ) : (
-          <div className="relative pt-32 pb-32 space-y-0">
-            {[
-              HeaderSection,
-              BiographySection,
-              BooksSection,
-              PressSection,
-              ContactSection,
-            ].map((section, idx) => (
-              <SectionWrapper key={idx} index={idx}>
-                {section}
-              </SectionWrapper>
-            ))}
+          <div className="space-y-0">
+            {HeaderSection}
+            {BiographySection}
+            {BooksSection}
+            {PressSection}
+            {ContactSection}
           </div>
         )}
       </div>
