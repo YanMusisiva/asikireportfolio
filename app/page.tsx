@@ -1,157 +1,429 @@
 "use client";
+import React, { useState, useRef, useEffect } from "react";
+import { Sun, Moon, ArrowLeft, ArrowRight } from "lucide-react";
 
-import React from "react";
-import NewsletterSection from "../components/NewsletterSection";
-import Image from "next/image";
-import { useState } from "react";
+const Portfolio = () => {
+  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [currentSection, setCurrentSection] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-const links = [
-  {
-    title: "Saudi Arabia",
-    url: "https://tundrafile.com/show.php?l=0&u=2413362&id=70436",
-    image: "/saudiarabia.png",
-    description:"دخل رقم هاتفك الآن لبدء التنزيل",
-    about:"حمّل أحدث المحتوى"
-  },
- 
-  {
-    title: "Germany",
-    url: "https://tundrafile.com/show.php?l=0&u=2413362&id=70105",
-    image: "/germany.png",
-    description:"Geben Sie jetzt Ihre Kreditkartendaten ein, um loszulegen.",
-    about:"Testen Sie jetzt Ihre Damenunterwäsche!"
-  },
-  {
-    title: "United Kingdom",
-    url: "https://tundrafile.com/show.php?l=0&u=2413362&id=70099",
-    image: "/unitedkingdom.png",
-    description:"Enter your credit card information now to get started.",
-    about:"Start your Woman Underwear Trial Now!"
-  },
-  {
-    title: "Denmark",
-    url: "https://tundrafile.com/show.php?l=0&u=2413362&id=69752",
-    image: "/denmark.png",
-    description:"Indtast dine kreditkortoplysninger nu for at komme i gang.",
-    about:"Start din prøveperiode på dameundertøj nu!"
-  },
-  {
-    title: "Italy",
-    url: "https://tundrafile.com/show.php?l=0&u=2413362&id=69067",
-    image: "/italy.png",
-    description:"Installa l'app e registrati nell'app.",
-    about:"Registra un account SisalFunClub!"
-  },
-  {
-    title: "New Zealand",
-    url: "https://tundrafile.com/show.php?l=0&u=2413362&id=52956",
-    image: "/newzealand.png",
-    description:"Enter your information now for a chance to win.",
-    about:"Claim Your $100 Gillette Heated Razor!"
-  },
-  
-  // Ajoutez d'autres liens si besoin
-];
+  const themeClasses = {
+    bg: isDarkMode ? "bg-gray-900" : "bg-gray-100",
+    text: isDarkMode ? "text-white" : "text-gray-900",
+    textSecondary: isDarkMode ? "text-gray-300" : "text-gray-600",
+    accent: isDarkMode ? "text-teal-400" : "text-teal-600",
+    cardBg: isDarkMode ? "bg-gray-800" : "bg-white",
+    border: isDarkMode ? "border-gray-700" : "border-gray-300",
+  };
 
+  const books = [
+    {
+      title: "The Immortalist",
+      subtitle: "Richard Gore",
+      cover:
+        "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=300&h=450&fit=crop",
+      genre: "Philosophy",
+    },
+    {
+      title: "Roots",
+      subtitle: "Richard Gore",
+      cover:
+        "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=300&h=450&fit=crop",
+      genre: "Novel",
+    },
+    {
+      title: "The Food of Love",
+      subtitle: "Richard Gore",
+      cover:
+        "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=300&h=450&fit=crop",
+      genre: "Short Story",
+    },
+  ];
 
+  // Responsive detection
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
-const LINKS_PER_PAGE = 10;
+  const sections = ["header", "biography", "books", "press", "contact"];
+  const isLastSection = currentSection === sections.length - 1;
 
-const LinksSection: React.FC = () => {
-  const [page, setPage] = useState(0);
+  // Swipe support for mobile
+  useEffect(() => {
+    if (!isMobile || isLastSection) return;
+    const container = containerRef.current;
+    if (!container) return;
+    let startX = 0;
+    const onTouchStart = (e: TouchEvent) => {
+      startX = e.touches[0].clientX;
+    };
+    const onTouchEnd = (e: TouchEvent) => {
+      const endX = e.changedTouches[0].clientX;
+      if (endX - startX > 50) handlePrev();
+      else if (startX - endX > 50) handleNext();
+    };
+    container.addEventListener("touchstart", onTouchStart);
+    container.addEventListener("touchend", onTouchEnd);
+    return () => {
+      container.removeEventListener("touchstart", onTouchStart);
+      container.removeEventListener("touchend", onTouchEnd);
+    };
+    // eslint-disable-next-line
+  }, [currentSection, isMobile, isLastSection]);
 
-  const start = page * LINKS_PER_PAGE;
-  const end = start + LINKS_PER_PAGE;
-  const paginatedLinks = links.slice(start, end);
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+  };
 
-  const hasNext = end < links.length;
-  const hasPrev = page > 0;
+  const handleNext = () => {
+    if (currentSection < sections.length - 1)
+      setCurrentSection(currentSection + 1);
+  };
+  const handlePrev = () => {
+    if (currentSection > 0) setCurrentSection(currentSection - 1);
+  };
 
-  return (
-    <section id="links" className="py-8">
-      <h2 className="text-2xl font-bold mb-6 text-center text-blue-600">Featured links</h2>
-      <div className="columns-1 sm:columns-2 md:columns-3 gap-4 space-y-4">
-        {paginatedLinks.map((link, idx) => (
-          <div
-            key={idx}
-            className="break-inside-avoid rounded-xl shadow-lg bg-white mb-4 hover:scale-105 transition-transform"
-          >
-            <a href={link.url} target="_blank" rel="noopener noreferrer" className="block">
-              <Image
-                width={500}
-                height={300}
-                src={link.image}
-                alt={link.title}
-                className="w-full h-48 object-cover rounded-t-xl"
-              />
-              <div className="p-4 text-center">
-                <h3 className="text-lg font-semibold text-blue-950">{link.title}</h3>
-              </div>
-              <div className="p-4 text-center">
-                <h3 className="text-lg text-blue-950">{link.description}</h3>
-              </div>
-              <div className="p-4 text-center">
-                <h3 className="text-lg font-semibold text-blue-950">{link.about}</h3>
-              </div>
-            </a>
-          </div>
-        ))}
+  // Section JSX
+  const HeaderSection = (
+    <div className="flex flex-col lg:flex-row items-start justify-between mb-20">
+      {/* Profile Image */}
+      <div className="w-full lg:w-2/5 mb-12 lg:mb-0">
+        <div className="relative">
+          <img
+            src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=800&fit=crop&crop=face"
+            alt="Richard Gore"
+            className="w-full max-w-md mx-auto lg:mx-0 rounded-lg shadow-2xl"
+          />
+        </div>
       </div>
-      <div className="flex justify-center gap-4 mt-6">
-        {hasPrev && (
-          <button
-            onClick={() => setPage(page - 1)}
-            className="px-4 py-2 bg-blue-200 rounded hover:bg-blue-300 font-semibold"
+      {/* Header Text */}
+      <div className="w-full lg:w-3/5 lg:pl-16">
+        <div className="mb-8">
+          <h1 className="text-6xl lg:text-8xl font-light mb-2">Richard</h1>
+          <h1 className="text-6xl lg:text-8xl font-bold">Gore</h1>
+          <p
+            className={`text-sm uppercase tracking-widest mt-4 ${themeClasses.accent}`}
           >
-            Précédent
-          </button>
-        )}
-        {hasNext && (
-          <button
-            onClick={() => setPage(page + 1)}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 font-semibold"
-          >
-            Voir plus
-          </button>
-        )}
-      </div>
-    </section>
-  );
-};
-
-export default function Home() {
-  return (
-    <div className="bg-gray-100 min-h-screen">
-      {/* Hero */}
-      <div className="bg-gradient-to-r from-blue-400 to-purple-500 py-16 text-white text-center">
-        <h1 className="text-4xl font-bold mb-4 mx-2 text-center">Welcome to your gateway <br />for country-specific links and updates!</h1>
-        <p className="text-xl mb-6 mx-2 text-center">Discover amazing links for fun, exciting prizes,<br/> free games and exciting giveaways! Stay tuned and keep coming back for more fresh, entertaining content made just for you.</p>
-        <a
-          href="#links"
-          className="inline-block bg-white text-blue-600 font-semibold px-6 py-3 rounded-full shadow hover:bg-blue-50 transition"
-        >
-          Start exploring now
-        </a>
-      </div>
-
-      {/* Présentation */}
-      <section className="max-w-2xl mx-auto py-10 px-4">
-        <h2 className="text-2xl font-bold mb-4 text-center text-blue-600">About our website</h2>
-        <p className="mb-2 text-center text-black ">
-          Welcome to our website, your destination for free giveaways and exciting prizes, fun games, and the latest videos! Explore our links and discover the fun and free rewards we&apos;ve prepared just for you.
-        </p>
-        <p className="text-center text-black">
-         Our site is designed to help you discover links you might have missed without us.
-        </p>
-      </section>
-
-      {/* Liens façon Pinterest */}
-      <LinksSection />
-
-      {/* Newsletter */}
-      <div className="max-w-xl mx-auto px-4">
-        <NewsletterSection />
+            Website of the Writer
+          </p>
+        </div>
       </div>
     </div>
   );
-}
+
+  const BiographySection = (
+    <div className="mb-20">
+      <div className="flex flex-col lg:flex-row items-start">
+        <div className="w-full lg:w-1/3 mb-12 lg:mb-0">
+          <div className="text-9xl font-bold opacity-20 leading-none">01</div>
+          <div className="mt-4">
+            <h2 className="text-2xl font-light uppercase tracking-widest mb-6">
+              My Biography
+            </h2>
+            <div
+              className={`w-12 h-0.5 ${
+                isDarkMode ? "bg-teal-400" : "bg-teal-600"
+              } mb-8`}
+            ></div>
+            <div
+              className={`space-y-4 text-sm ${themeClasses.textSecondary} leading-relaxed`}
+            >
+              <p>About Me</p>
+              <p>Reviews</p>
+              <p>The Next Book</p>
+              <p>My Events</p>
+            </div>
+          </div>
+        </div>
+        <div className="w-full lg:w-2/3 lg:pl-16">
+          <div
+            className={`${themeClasses.textSecondary} leading-relaxed space-y-6`}
+          >
+            <p>
+              Gravida rutrum id quam blanditiis blandit. Cursus id purus
+              blandit, bibendum sed accumsan nunc. Quis elit lorem blandit
+              blandit elit ut blandit vitae et ligula blandit, vulputate
+              pulvinar quis. Vestibulum hendrerit dignissim magna lorem lorem.
+            </p>
+            <p>
+              Lorem ipsum dolor amet consectetur adipiscing elit. Sed blandit
+              lorem mauris, vitae ornare elit risus ac. Consectetur Lorem ipsum
+              lorem lorem mauris lorem ipsum consectetur mauris lorem.
+              Consectetur mauris lorem ipsum consectetur mauris lorem mauris
+              lorem mauris vestibulum elementum dui rutrum rutrum mauris.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const BooksSection = (
+    <div className="mb-20">
+      <div className="flex flex-col lg:flex-row items-start">
+        <div className="w-full lg:w-1/3 mb-12 lg:mb-0">
+          <div className="text-9xl font-bold opacity-20 leading-none">02</div>
+          <div className="mt-4">
+            <h2 className="text-2xl font-light uppercase tracking-widest">
+              My Bestsellers
+            </h2>
+            <div
+              className={`w-12 h-0.5 ${
+                isDarkMode ? "bg-teal-400" : "bg-teal-600"
+              } mt-6`}
+            ></div>
+          </div>
+        </div>
+        <div className="w-full lg:w-2/3 lg:pl-16">
+          <div className="grid md:grid-cols-3 gap-8">
+            {books.map((book, index) => (
+              <div key={index} className="text-center group cursor-pointer">
+                <div className="relative overflow-hidden rounded-lg mb-4 shadow-lg">
+                  <img
+                    src={book.cover}
+                    alt={book.title}
+                    className="w-full h-80 object-cover transform group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div
+                    className={`absolute inset-0 bg-gradient-to-t ${
+                      isDarkMode
+                        ? "from-black/60 to-transparent"
+                        : "from-white/60 to-transparent"
+                    } opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
+                  ></div>
+                </div>
+                <p
+                  className={`text-xs uppercase tracking-wide mb-2 ${themeClasses.accent}`}
+                >
+                  {book.genre}
+                </p>
+                <h3 className="text-lg font-bold uppercase tracking-wide">
+                  {book.title}
+                </h3>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const PressSection = (
+    <div className="mb-20">
+      <div className="flex flex-col lg:flex-row items-start">
+        <div className="w-full lg:w-1/3 mb-12 lg:mb-0">
+          <div className="text-9xl font-bold opacity-20 leading-none">03</div>
+          <div className="mt-4">
+            <h2 className="text-2xl font-light uppercase tracking-widest">
+              The Press
+            </h2>
+            <div
+              className={`w-12 h-0.5 ${
+                isDarkMode ? "bg-teal-400" : "bg-teal-600"
+              } mt-6`}
+            ></div>
+          </div>
+        </div>
+        <div className="w-full lg:w-2/3 lg:pl-16">
+          <div className={`${themeClasses.textSecondary} leading-relaxed mb-8`}>
+            <p>
+              "Gravida ut purus blanditiis rutrum elit rut scelerisque orci.
+              Quis est rutrum rutrum rutrum blanditiis. Lorem id rutrum rutrum
+              ipsum elit. ut elit blanditiis blanditiis rutrum rutrum lorem
+              ipsum dolor lorem. Consectetur mauris lorem ipsum consectetur
+              mauris lorem rutrum maec mauris mauris mauris lorem mauris lorem
+              rutrum rutrum mauris lorem mauris rutrum mauris."
+            </p>
+          </div>
+          <div className="flex items-center space-x-4">
+            <div className="w-12 h-12 rounded-full overflow-hidden">
+              <img
+                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face"
+                alt="Reviewer"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div>
+              <p className="font-semibold text-sm">John Charlton</p>
+              <p className={`text-xs ${themeClasses.textSecondary}`}>
+                Book Reviewer
+              </p>
+            </div>
+            <div className="flex space-x-2 ml-auto">
+              <ArrowLeft className="w-5 h-5 cursor-pointer hover:scale-110 transition-transform" />
+              <ArrowRight className="w-5 h-5 cursor-pointer hover:scale-110 transition-transform" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const ContactSection = (
+    <div>
+      <div className="flex flex-col lg:flex-row items-start">
+        <div className="w-full lg:w-1/3 mb-12 lg:mb-0">
+          <div className="text-9xl font-bold opacity-20 leading-none">04</div>
+          <div className="mt-4">
+            <h2 className="text-2xl font-light uppercase tracking-widest">
+              Contact
+            </h2>
+            <div
+              className={`w-12 h-0.5 ${
+                isDarkMode ? "bg-teal-400" : "bg-teal-600"
+              } mt-6`}
+            ></div>
+          </div>
+        </div>
+        <div className="w-full lg:w-2/3 lg:pl-16">
+          <div
+            className={`${themeClasses.textSecondary} leading-relaxed space-y-6`}
+          >
+            <div>
+              <p className="font-semibold mb-2">Email</p>
+              <p>richard.gore@writer.com</p>
+            </div>
+            <div>
+              <p className="font-semibold mb-2">Phone</p>
+              <p>+1 (555) 123-4567</p>
+            </div>
+            <div>
+              <p className="font-semibold mb-2">Address</p>
+              <p>
+                123 Literary Lane
+                <br />
+                New York, NY 10001
+              </p>
+            </div>
+            <div>
+              <p className="font-semibold mb-2">Social Media</p>
+              <div className="flex space-x-4">
+                <a
+                  href="#"
+                  className={`${themeClasses.accent} hover:opacity-70 transition-opacity`}
+                >
+                  Twitter
+                </a>
+                <a
+                  href="#"
+                  className={`${themeClasses.accent} hover:opacity-70 transition-opacity`}
+                >
+                  Instagram
+                </a>
+                <a
+                  href="#"
+                  className={`${themeClasses.accent} hover:opacity-70 transition-opacity`}
+                >
+                  LinkedIn
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Section array for mobile
+  const sectionComponents = [
+    HeaderSection,
+    BiographySection,
+    BooksSection,
+    PressSection,
+    ContactSection,
+  ];
+
+  return (
+    <div
+      className={`min-h-screen flex flex-col transition-all duration-500 ${themeClasses.bg} ${themeClasses.text}`}
+    >
+      {/* Theme Toggle */}
+      <button
+        onClick={toggleTheme}
+        className={`fixed top-6 right-6 z-50 p-3 rounded-full ${themeClasses.cardBg} ${themeClasses.border} border shadow-lg transition-all duration-300 hover:scale-110`}
+      >
+        {isDarkMode ? (
+          <Sun className="w-6 h-6 text-yellow-500" />
+        ) : (
+          <Moon className="w-6 h-6 text-indigo-600" />
+        )}
+      </button>
+
+      {/* Navigation (mobile horizontal) */}
+      {isMobile && !isLastSection && (
+        <div className="fixed bottom-6 left-0 right-0 z-40 flex justify-center items-center space-x-8">
+          <button
+            onClick={handlePrev}
+            disabled={currentSection === 0}
+            className="p-2 rounded-full bg-teal-500 text-white disabled:opacity-30"
+          >
+            <ArrowLeft className="w-6 h-6" />
+          </button>
+          <span className="text-lg font-bold">
+            {currentSection + 1}/{sections.length}
+          </span>
+          <button
+            onClick={handleNext}
+            disabled={currentSection === sections.length - 1}
+            className="p-2 rounded-full bg-teal-500 text-white disabled:opacity-30"
+          >
+            <ArrowRight className="w-6 h-6" />
+          </button>
+        </div>
+      )}
+
+      {/* Navigation (desktop) */}
+      {!isMobile && (
+        <div className="fixed top-6 left-6 z-40 flex items-center space-x-4">
+          <ArrowLeft className="w-6 h-6 cursor-pointer hover:scale-110 transition-transform" />
+          <div className="w-8 h-8 cursor-pointer">
+            <svg
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              className="w-full h-full"
+            >
+              <path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z" />
+            </svg>
+          </div>
+        </div>
+      )}
+
+      {/* Main Content */}
+      <div
+        ref={containerRef}
+        className={`container mx-auto px-2 py-16 flex-1 ${
+          isMobile && !isLastSection
+            ? "flex items-center justify-center overflow-hidden"
+            : ""
+        }`}
+        style={isMobile && !isLastSection ? { minHeight: "100vh" } : undefined}
+      >
+        {isMobile && !isLastSection ? (
+          <div className="w-full max-w-md mx-auto transition-all duration-500">
+            {sectionComponents[currentSection]}
+          </div>
+        ) : (
+          <div>
+            {HeaderSection}
+            {BiographySection}
+            {BooksSection}
+            {PressSection}
+            {ContactSection}
+          </div>
+        )}
+      </div>
+
+      {/* Footer */}
+      <footer
+        className={`w-full py-4 text-center text-xs ${themeClasses.cardBg} ${themeClasses.textSecondary} border-t ${themeClasses.border}`}
+      >
+        &copy; {new Date().getFullYear()} Richard Gore. All rights reserved.
+      </footer>
+    </div>
+  );
+};
+export default Portfolio;
