@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AsFindcountrylinks",
-  description: "Liens pour trouver des cadeaux par pays",
+  title: "John Asikire Portfolio",
+  description: "John Asikire Portfolio",
 };
 
 export default function RootLayout({
@@ -24,13 +24,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        // Dans _document.tsx ou _app.tsx
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap"
-          rel="stylesheet"
-        />
-      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

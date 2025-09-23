@@ -9,6 +9,16 @@ import {
   Github,
   Linkedin,
   Twitter,
+  Menu,
+  X,
+  Code,
+  Database,
+  Smartphone,
+  Globe,
+  Zap,
+  Cpu,
+  ChevronDown,
+  Star,
 } from "lucide-react";
 
 const Loader = ({ isDarkMode }: { isDarkMode: boolean }) => (
@@ -74,30 +84,32 @@ const Loader = ({ isDarkMode }: { isDarkMode: boolean }) => (
   </div>
 );
 
-// Hook pour l'intersection observer
-const useInView = (threshold = 0.1) => {
-  const [isInView, setIsInView] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+// // Hook pour l'intersection observer
+// const useInView = (threshold = 0.1) => {
+//   const [isInView, setIsInView] = useState(false);
+//   const ref = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsInView(true);
-        }
-      },
-      { threshold }
-    );
+//   useEffect(() => {
+//     if (isInView) return;
+//     const observer = new IntersectionObserver(
+//       ([entry]) => {
+//         if (entry.isIntersecting) {
+//           setIsInView(true);
+//           observer.disconnect();
+//         }
+//       },
+//       { threshold }
+//     );
 
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
+//     if (ref.current) {
+//       observer.observe(ref.current);
+//     }
 
-    return () => observer.disconnect();
-  }, [threshold]);
+//     return () => observer.disconnect();
+//   }, [isInView, threshold]);
 
-  return [ref, isInView] as const;
-};
+//   return [ref, isInView] as const;
+// };
 
 // Typewriter avec son de machine à écrire
 
@@ -180,6 +192,70 @@ const MouseSpotlight = ({ isDarkMode }: { isDarkMode: boolean }) => {
   );
 };
 
+const SkillCard = ({
+  icon: Icon,
+  title,
+  description,
+  delay = 0,
+  isDarkMode,
+  progress,
+}: {
+  icon: any;
+  title: string;
+  description: string;
+  delay?: number;
+  isDarkMode: boolean;
+  progress: number;
+}) => {
+  // const [ref, isInView] = useInView();
+
+  return (
+    <div
+      // ref={ref}
+      className={`group relative overflow-hidden rounded-xl p-6 transition-all duration-500 hover:scale-105 cursor-pointer ${
+        isDarkMode ? "bg-gray-800/50" : "bg-white/50"
+      } backdrop-blur-sm border ${
+        isDarkMode ? "border-gray-700" : "border-gray-200"
+      } hover:border-teal-400/50`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {/* Animated background */}
+      <div className="absolute inset-0 bg-gradient-to-r from-teal-400/10 to-blue-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+      {/* Glow effect */}
+      <div className="absolute -inset-0.5 bg-gradient-to-r from-teal-400 to-blue-600 opacity-0 group-hover:opacity-20 blur transition-opacity duration-500" />
+
+      <div className="relative z-10">
+        <div className="flex items-center mb-3">
+          <div className="p-2 rounded-lg bg-gradient-to-r from-teal-400 to-blue-600 text-white group-hover:scale-110 transition-transform duration-300">
+            <Icon className="w-5 h-5" />
+          </div>
+          <div className="ml-3 flex-1">
+            <h3 className="font-semibold text-sm group-hover:text-teal-400 transition-colors duration-300">
+              {title}
+            </h3>
+          </div>
+        </div>
+        <p
+          className={`text-xs leading-relaxed ${
+            isDarkMode ? "text-gray-400" : "text-gray-600"
+          } group-hover:text-gray-300 transition-colors duration-300`}
+        >
+          {description}
+        </p>
+
+        {/* Progress bar */}
+        <div className="mt-3 h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+          <div
+            className="h-full bg-gradient-to-r from-teal-400 to-blue-600 rounded-full transform origin-left scale-x-0 group-hover:scale-x-88 transition-transform duration-1000 ease-out"
+            style={{ transform: `scaleX(${progress})` }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Portfolio = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [currentSection, setCurrentSection] = useState(0);
@@ -218,6 +294,45 @@ const Portfolio = () => {
     cardBg: isDarkMode ? "bg-gray-800" : "bg-white",
     border: isDarkMode ? "border-gray-700" : "border-gray-300",
   };
+
+  const skills = [
+    {
+      icon: Code,
+      title: "Frontend Development",
+      description: "React, Next.js, TypeScript, Tailwind CSS",
+      progress: 1,
+    },
+    {
+      icon: Database,
+      title: "Backend Development",
+      description: "Node.js, Express, MongoDB, PostgreSQL",
+      progress: 1.1,
+    },
+    {
+      icon: Smartphone,
+      title: "Mobile Development",
+      description: "React Native, Expo",
+      progress: 1,
+    },
+    {
+      icon: Globe,
+      title: "Full Stack",
+      description: "MERN Stack, JAMstack, Serverless",
+      progress: 1,
+    },
+    {
+      icon: Zap,
+      title: "Performance",
+      description: "Optimisation, PWA, SEO",
+      progress: 1,
+    },
+    {
+      icon: Cpu,
+      title: "DevOps & Cloud",
+      description: "AWS, Docker, CI/CD, Vercel",
+      progress: 0.9,
+    },
+  ];
 
   const books = [
     {
@@ -308,69 +423,69 @@ const Portfolio = () => {
     if (currentSection > 0) setCurrentSection(currentSection - 1);
   };
 
-  // Animation Components
-  const FadeInSection = ({
-    children,
-    delay = 0,
-  }: {
-    children: React.ReactNode;
-    delay?: number;
-  }) => {
-    const [ref, isInView] = useInView();
-    return (
-      <div
-        ref={ref}
-        className={`transform transition-all duration-1000 ease-out ${
-          isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-        }`}
-        style={{ transitionDelay: `${delay}ms` }}
-      >
-        {children}
-      </div>
-    );
-  };
+  // // Animation Components
+  // const FadeInSection = ({
+  //   children,
+  //   delay = 0,
+  // }: {
+  //   children: React.ReactNode;
+  //   delay?: number;
+  // }) => {
+  //   const [ref, isInView] = useInView();
+  //   return (
+  //     <div
+  //       ref={ref}
+  //       className={`transform transition-all duration-1000 ease-out ${
+  //         isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+  //       }`}
+  //       style={{ transitionDelay: `${delay}ms` }}
+  //     >
+  //       {children}
+  //     </div>
+  //   );
+  // };
 
-  const SlideInLeft = ({
-    children,
-    delay = 0,
-  }: {
-    children: React.ReactNode;
-    delay?: number;
-  }) => {
-    const [ref, isInView] = useInView();
-    return (
-      <div
-        ref={ref}
-        className={`transform transition-all duration-800 ease-out ${
-          isInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12"
-        }`}
-        style={{ transitionDelay: `${delay}ms` }}
-      >
-        {children}
-      </div>
-    );
-  };
+  // const SlideInLeft = ({
+  //   children,
+  //   delay = 0,
+  // }: {
+  //   children: React.ReactNode;
+  //   delay?: number;
+  // }) => {
+  //   const [ref, isInView] = useInView();
+  //   return (
+  //     <div
+  //       ref={ref}
+  //       className={`transform transition-all duration-800 ease-out ${
+  //         isInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12"
+  //       }`}
+  //       style={{ transitionDelay: `${delay}ms` }}
+  //     >
+  //       {children}
+  //     </div>
+  //   );
+  // };
 
-  const SlideInRight = ({
-    children,
-    delay = 0,
-  }: {
-    children: React.ReactNode;
-    delay?: number;
-  }) => {
-    const [ref, isInView] = useInView();
-    return (
-      <div
-        ref={ref}
-        className={`transform transition-all duration-800 ease-out ${
-          isInView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-12"
-        }`}
-        style={{ transitionDelay: `${delay}ms` }}
-      >
-        {children}
-      </div>
-    );
-  };
+  // const SlideInRight = ({
+  //   children,
+  //   delay = 0,
+  // }: {
+  //   children: React.ReactNode;
+  //   delay?: number;
+  // }) => {
+  //   const [ref, isInView] = useInView();
+  //   return (
+  //     <div
+  //       ref={ref}
+  //       className={`transform transition-all duration-800 ease-out ${
+  //         isInView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-12"
+  //       }`}
+  //       style={{ transitionDelay: `${delay}ms` }}
+  //     >
+  //       {children}
+  //     </div>
+  //   );
+  // };
 
   // Section JSX avec animations
   const HeaderSection = (
@@ -386,310 +501,334 @@ const Portfolio = () => {
       </div>
 
       {/* Profile Image */}
-      <SlideInLeft>
-        <div className="w-full lg:w-2/5 mb-12 lg:mb-0 relative z-10">
-          <div className="relative group">
-            <div className="absolute -inset-1 bg-gradient-to-r from-teal-400 to-blue-600 rounded-lg blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
-            <img
-              src="johnasikire.jpg"
-              alt="John Asikire"
-              className="relative w-full max-w-md mx-auto lg:mx-0 rounded-full shadow-2xl transform transition-all duration-500 group-hover:scale-105"
-            />
-          </div>
+      {/* <SlideInLeft> */}
+      <div className="w-full lg:w-2/5 mb-12 lg:mb-0 relative z-10">
+        <div className="relative group">
+          <div className="absolute -inset-1 bg-gradient-to-r from-teal-400 to-blue-600 rounded-lg blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
+          <img
+            src="johnasikire.jpg"
+            alt="John Asikire"
+            className="relative w-full max-w-md mx-auto lg:mx-0 rounded-full shadow-2xl transform transition-all duration-500 group-hover:scale-105"
+          />
         </div>
-      </SlideInLeft>
+      </div>
+      {/* </SlideInLeft> */}
 
       {/* Header Text */}
-      <SlideInRight delay={200}>
-        <div className="w-full lg:w-3/5 lg:pl-16 relative z-10">
-          <div className="mb-8">
-            <h1 className="text-6xl lg:text-8xl font-light mb-2 transform transition-all duration-700 hover:scale-105">
-              {showTypewriter ? <TypewriterText text="John" /> : "John"}
-            </h1>
-            <h1 className="text-6xl lg:text-8xl font-bold transform transition-all duration-700 hover:scale-105">
-              {showTypewriter ? <TypewriterText text="Asikire" /> : "Asikire"}
-            </h1>
-            <FadeInSection delay={1000}>
-              <p
-                className={`text-sm uppercase tracking-widest mt-4 ${themeClasses.accent} animate-pulse`}
-              >
-                <TypewriterText text="Software Developer and Entrepreneur" />
-              </p>
-            </FadeInSection>
-          </div>
+      {/* <SlideInRight delay={200}> */}
+      <div className="w-full lg:w-3/5 lg:pl-16 relative z-10">
+        <div className="mb-8">
+          <h1 className="text-6xl lg:text-8xl font-light mb-2 transform transition-all duration-700 hover:scale-105">
+            {showTypewriter ? <TypewriterText text="John" /> : "John"}
+          </h1>
+          <h1 className="text-6xl lg:text-8xl font-bold transform transition-all duration-700 hover:scale-105">
+            {showTypewriter ? <TypewriterText text="Asikire" /> : "Asikire"}
+          </h1>
+          {/* <FadeInSection delay={1000}> */}
+          <p
+            className={`text-sm uppercase tracking-widest mt-4 ${themeClasses.accent} animate-pulse`}
+          >
+            <TypewriterText text="Software Developer and Entrepreneur" />
+          </p>
+          <p>
+            <TypewriterText text="I help people and businesses turn ideas into websites, web apps, and mobile apps without endless delays" />
+          </p>
+          {/* </FadeInSection> */}
         </div>
-      </SlideInRight>
+      </div>
+      {/* // </SlideInRight> */}
     </div>
   );
 
   const BiographySection = (
-    <FadeInSection>
-      <div className="mb-20 relative">
-        <div className="flex flex-col lg:flex-row items-start">
-          <SlideInLeft>
-            <div className="w-full lg:w-1/3 mb-12 lg:mb-0">
-              <div className="text-9xl font-bold opacity-20 leading-none hover:opacity-30 transition-opacity duration-500">
-                01
-              </div>
-              <div className="mt-4">
-                <h2 className="text-2xl font-light uppercase tracking-widest mb-6 group">
-                  <span className="bg-gradient-to-r from-teal-400 to-blue-600 bg-clip-text text-transparent group-hover:from-blue-600 group-hover:to-teal-400 transition-all duration-500">
-                    About Me
-                  </span>
-                </h2>
-                <div
-                  className={`w-12 h-0.5 ${
-                    isDarkMode ? "bg-teal-400" : "bg-teal-600"
-                  } mb-8 transform origin-left scale-x-0 animate-scale-x`}
-                ></div>
-              </div>
-            </div>
-          </SlideInLeft>
-
-          <SlideInRight delay={300}>
-            <div className="w-full lg:w-2/3 lg:pl-16">
-              <div
-                className={`${themeClasses.textSecondary} leading-relaxed space-y-6`}
-              >
-                <p className="transform transition-all duration-500 hover:text-white">
-                  Passionate software developer with expertise in modern web
-                  technologies and entrepreneurial spirit. I specialize in
-                  creating elegant solutions that bridge the gap between
-                  innovative ideas and practical implementation.
-                </p>
-                <p className="transform transition-all duration-500 hover:text-white">
-                  With a focus on user experience and clean code architecture, I
-                  help businesses transform their digital presence through
-                  cutting-edge applications and strategic technology consulting.
-                </p>
-              </div>
-            </div>
-          </SlideInRight>
+    <div className="mb-20 relative">
+      <div className="flex flex-col lg:flex-row items-start">
+        {/* <SlideInLeft> */}
+        <div className="w-full lg:w-1/3 mb-12 lg:mb-0">
+          <div className="text-9xl font-bold opacity-20 leading-none hover:opacity-30 transition-opacity duration-500">
+            01
+          </div>
+          <div className="mt-4">
+            <h2 className="text-2xl font-light uppercase tracking-widest mb-6 group">
+              <span className="bg-gradient-to-r from-teal-400 to-blue-600 bg-clip-text text-transparent group-hover:from-blue-600 group-hover:to-teal-400 transition-all duration-500">
+                About Me
+              </span>
+            </h2>
+            <div
+              className={`w-12 h-0.5 ${
+                isDarkMode ? "bg-teal-400" : "bg-teal-600"
+              } mb-8 transform origin-left scale-x-0 animate-scale-x`}
+            ></div>
+          </div>
         </div>
+        {/* </SlideInLeft> */}
+
+        {/* <SlideInRight delay={300}> */}
+        <div className="w-full lg:w-2/3 lg:pl-16">
+          <div
+            className={`${themeClasses.textSecondary} leading-relaxed space-y-6`}
+          >
+            <p className="transform transition-all duration-500 hover:text-white">
+              {" "}
+              Hello, I'm a John Asikire Passionate software developer with
+              expertise in modern web technologies and entrepreneurial spirit. I
+              specialize in creating elegant solutions that bridge the gap
+              between innovative ideas and practical implementation.
+            </p>
+            <p className="transform transition-all duration-500 hover:text-white">
+              With a focus on user experience and clean code architecture, I
+              help businesses transform their digital presence through
+              cutting-edge applications and strategic technology consulting.
+            </p>
+          </div>
+          {/* Skills Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {skills.map((skill, index) => (
+              <SkillCard
+                key={skill.title}
+                icon={skill.icon}
+                title={skill.title}
+                description={skill.description}
+                delay={index * 100}
+                isDarkMode={isDarkMode}
+                progress={skill.progress}
+              />
+            ))}
+          </div>
+        </div>
+        {/* </SlideInRight> */}
       </div>
-    </FadeInSection>
+    </div>
   );
+  // Skills Card Component
 
   const BooksSection = (
-    <FadeInSection>
-      <div className="mb-20">
-        <div className="flex flex-col lg:flex-row items-start">
-          <SlideInLeft>
-            <div className="w-full lg:w-1/3 mb-12 lg:mb-0">
-              <div className="text-9xl font-bold opacity-20 leading-none hover:opacity-30 transition-opacity duration-500">
-                02
-              </div>
-              <div className="mt-4">
-                <h2 className="text-2xl font-light uppercase tracking-widest group">
-                  <span className="bg-gradient-to-r from-teal-400 to-blue-600 bg-clip-text text-transparent group-hover:from-blue-600 group-hover:to-teal-400 transition-all duration-500">
-                    My Projects
-                  </span>
-                </h2>
-                <div
-                  className={`w-12 h-0.5 ${
-                    isDarkMode ? "bg-teal-400" : "bg-teal-600"
-                  } mt-6 transform origin-left scale-x-0 animate-scale-x`}
-                ></div>
-              </div>
-            </div>
-          </SlideInLeft>
+    // <FadeInSection>
+    <div className="mb-20">
+      <div className="flex flex-col lg:flex-row items-start">
+        {/* <SlideInLeft> */}
+        <div className="w-full lg:w-1/3 mb-12 lg:mb-0">
+          <div className="text-9xl font-bold opacity-20 leading-none hover:opacity-30 transition-opacity duration-500">
+            02
+          </div>
+          <div className="mt-4">
+            <h2 className="text-2xl font-light uppercase tracking-widest group">
+              <span className="bg-gradient-to-r from-teal-400 to-blue-600 bg-clip-text text-transparent group-hover:from-blue-600 group-hover:to-teal-400 transition-all duration-500">
+                My Projects
+              </span>
+            </h2>
+            <div
+              className={`w-12 h-0.5 ${
+                isDarkMode ? "bg-teal-400" : "bg-teal-600"
+              } mt-6 transform origin-left scale-x-0 animate-scale-x`}
+            ></div>
+          </div>
+        </div>
+        {/* </SlideInLeft> */}
 
-          <div className="w-full lg:w-2/3 lg:pl-16">
-            <div className="grid md:grid-cols-3 gap-8">
-              {books.map((book, index) => (
-                <SlideInRight key={index} delay={index * 150}>
-                  <div className="text-center group cursor-pointer relative">
-                    {/* Glow effect background */}
-                    <div className="absolute -inset-4 bg-gradient-to-r from-teal-400/20 to-blue-600/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl"></div>
+        <div className="w-full lg:w-2/3 lg:pl-16">
+          <div className="grid md:grid-cols-3 gap-8">
+            {books.map((book, index) => (
+              // <SlideInRight  delay={index * 150}>
+              <div
+                key={index}
+                className="text-center group cursor-pointer relative"
+              >
+                {/* Glow effect background */}
+                <div className="absolute -inset-4 bg-gradient-to-r from-teal-400/20 to-blue-600/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl"></div>
 
-                    <div className="relative overflow-hidden rounded-lg mb-4 shadow-lg transform transition-all duration-500 group-hover:scale-105 group-hover:-rotate-1">
-                      <img
-                        src={book.cover}
-                        alt={book.title}
-                        className="w-full h-80 object-cover transform transition-transform duration-700 group-hover:scale-110"
-                      />
-                      <div
-                        className={`absolute inset-0 bg-gradient-to-t ${
-                          isDarkMode
-                            ? "from-black/80 via-transparent to-teal-400/20"
-                            : "from-white/80 via-transparent to-teal-400/20"
-                        } opacity-0 group-hover:opacity-100 transition-all duration-500`}
-                      >
-                        <div className="absolute bottom-4 left-4 right-4">
-                          <div className="flex space-x-3">
-                            <div className="w-8 h-8 bg-teal-400 rounded-full flex items-center justify-center transform hover:scale-110 transition-transform cursor-pointer">
-                              <Github className="w-4 h-4 text-white" />
-                            </div>
-                            <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center transform hover:scale-110 transition-transform cursor-pointer">
-                              <ArrowRight className="w-4 h-4 text-white" />
-                            </div>
-                          </div>
+                <div className="relative overflow-hidden rounded-lg mb-4 shadow-lg transform transition-all duration-500 group-hover:scale-105 group-hover:-rotate-1">
+                  <img
+                    src={book.cover}
+                    alt={book.title}
+                    className="w-full h-80 object-cover transform transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div
+                    className={`absolute inset-0 bg-gradient-to-t ${
+                      isDarkMode
+                        ? "from-black/80 via-transparent to-teal-400/20"
+                        : "from-white/80 via-transparent to-teal-400/20"
+                    } opacity-0 group-hover:opacity-100 transition-all duration-500`}
+                  >
+                    <div className="absolute bottom-4 left-4 right-4">
+                      <div className="flex space-x-3">
+                        <div className="w-8 h-8 bg-teal-400 rounded-full flex items-center justify-center transform hover:scale-110 transition-transform cursor-pointer">
+                          <Github className="w-4 h-4 text-white" />
+                        </div>
+                        <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center transform hover:scale-110 transition-transform cursor-pointer">
+                          <ArrowRight className="w-4 h-4 text-white" />
                         </div>
                       </div>
                     </div>
-                    <p
-                      className={`text-xs uppercase tracking-wide mb-2 ${themeClasses.accent} group-hover:animate-pulse`}
-                    >
-                      {book.genre}
-                    </p>
-                    <h3 className="text-lg font-bold uppercase tracking-wide transform transition-all duration-300 group-hover:text-teal-400">
-                      {book.title}
-                    </h3>
                   </div>
-                </SlideInRight>
-              ))}
-            </div>
+                </div>
+                <p
+                  className={`text-xs uppercase tracking-wide mb-2 ${themeClasses.accent} group-hover:animate-pulse`}
+                >
+                  {book.genre}
+                </p>
+                <h3 className="text-lg font-bold uppercase tracking-wide transform transition-all duration-300 group-hover:text-teal-400">
+                  {book.title}
+                </h3>
+              </div>
+              // </SlideInRight>
+            ))}
           </div>
         </div>
       </div>
-    </FadeInSection>
+    </div>
+    // </FadeInSection>
   );
 
   const PressSection = (
-    <FadeInSection>
-      <div className="mb-20">
-        <div className="flex flex-col lg:flex-row items-start">
-          <SlideInLeft>
-            <div className="w-full lg:w-1/3 mb-12 lg:mb-0">
-              <div className="text-9xl font-bold opacity-20 leading-none hover:opacity-30 transition-opacity duration-500">
-                03
-              </div>
-              <div className="mt-4">
-                <h2 className="text-2xl font-light uppercase tracking-widest group">
-                  <span className="bg-gradient-to-r from-teal-400 to-blue-600 bg-clip-text text-transparent group-hover:from-blue-600 group-hover:to-teal-400 transition-all duration-500">
-                    Testimonials
-                  </span>
-                </h2>
-                <div
-                  className={`w-12 h-0.5 ${
-                    isDarkMode ? "bg-teal-400" : "bg-teal-600"
-                  } mt-6 transform origin-left scale-x-0 animate-scale-x`}
-                ></div>
-              </div>
-            </div>
-          </SlideInLeft>
-
-          <SlideInRight delay={300}>
-            <div className="w-full lg:w-2/3 lg:pl-16">
-              <div
-                className={`${themeClasses.textSecondary} leading-relaxed mb-8 relative`}
-              >
-                <div className="absolute -left-4 -top-2 text-6xl text-teal-400/20 font-serif">
-                  "
-                </div>
-                <p className="italic transform transition-all duration-500 hover:text-white pl-8">
-                  "John's expertise in modern web development and his
-                  entrepreneurial mindset make him an invaluable asset. His
-                  ability to deliver innovative solutions while maintaining
-                  exceptional code quality is truly remarkable."
-                </p>
-                <div className="absolute -right-4 -bottom-2 text-6xl text-teal-400/20 font-serif">
-                  "
-                </div>
-              </div>
-              <div className="flex items-center space-x-4 group">
-                <div className="w-12 h-12 rounded-full overflow-hidden transform transition-all duration-300 group-hover:scale-110">
-                  <img
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face"
-                    alt="Reviewer"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div>
-                  <p className="font-semibold text-sm group-hover:text-teal-400 transition-colors duration-300">
-                    John Charlton
-                  </p>
-                  <p className={`text-xs ${themeClasses.textSecondary}`}>
-                    Tech Lead
-                  </p>
-                </div>
-                <div className="flex space-x-2 ml-auto">
-                  <ArrowLeft className="w-5 h-5 cursor-pointer hover:scale-125 hover:text-teal-400 transition-all duration-300 hover:animate-bounce" />
-                  <ArrowRight className="w-5 h-5 cursor-pointer hover:scale-125 hover:text-teal-400 transition-all duration-300 hover:animate-bounce" />
-                </div>
-              </div>
-            </div>
-          </SlideInRight>
+    // <FadeInSection>
+    <div className="mb-20">
+      <div className="flex flex-col lg:flex-row items-start">
+        {/* <SlideInLeft> */}
+        <div className="w-full lg:w-1/3 mb-12 lg:mb-0">
+          <div className="text-9xl font-bold opacity-20 leading-none hover:opacity-30 transition-opacity duration-500">
+            03
+          </div>
+          <div className="mt-4">
+            <h2 className="text-2xl font-light uppercase tracking-widest group">
+              <span className="bg-gradient-to-r from-teal-400 to-blue-600 bg-clip-text text-transparent group-hover:from-blue-600 group-hover:to-teal-400 transition-all duration-500">
+                Testimonials
+              </span>
+            </h2>
+            <div
+              className={`w-12 h-0.5 ${
+                isDarkMode ? "bg-teal-400" : "bg-teal-600"
+              } mt-6 transform origin-left scale-x-0 animate-scale-x`}
+            ></div>
+          </div>
         </div>
+        {/* </SlideInLeft> */}
+
+        {/* <SlideInRight delay={300}> */}
+        <div className="w-full lg:w-2/3 lg:pl-16">
+          <div
+            className={`${themeClasses.textSecondary} leading-relaxed mb-8 relative`}
+          >
+            <div className="absolute -left-4 -top-2 text-6xl text-teal-400/20 font-serif">
+              "
+            </div>
+            <p className="italic transform transition-all duration-500 hover:text-white pl-8">
+              "John's expertise in modern web development and his
+              entrepreneurial mindset make him an invaluable asset. His ability
+              to deliver innovative solutions while maintaining exceptional code
+              quality is truly remarkable looking he has done with my e-commerce
+              shirtime."
+            </p>
+            <div className="absolute -right-4 -bottom-2 text-6xl text-teal-400/20 font-serif">
+              "
+            </div>
+          </div>
+          <div className="flex items-center space-x-4 group">
+            <div className="w-12 h-12 rounded-full overflow-hidden transform transition-all duration-300 group-hover:scale-110">
+              <img
+                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face"
+                alt="Reviewer"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div>
+              <p className="font-semibold text-sm group-hover:text-teal-400 transition-colors duration-300">
+                John Charlton
+              </p>
+              <p className={`text-xs ${themeClasses.textSecondary}`}>
+                Tech Lead
+              </p>
+            </div>
+            <div className="flex space-x-2 ml-auto">
+              <ArrowLeft className="w-5 h-5 cursor-pointer hover:scale-125 hover:text-teal-400 transition-all duration-300 hover:animate-bounce" />
+              <ArrowRight className="w-5 h-5 cursor-pointer hover:scale-125 hover:text-teal-400 transition-all duration-300 hover:animate-bounce" />
+            </div>
+          </div>
+        </div>
+        {/* </SlideInRight> */}
       </div>
-    </FadeInSection>
+    </div>
+    // </FadeInSection>
   );
 
   const ContactSection = (
-    <FadeInSection>
-      <div>
-        <div className="flex flex-col lg:flex-row items-start">
-          <SlideInLeft>
-            <div className="w-full lg:w-1/3 mb-12 lg:mb-0">
-              <div className="text-9xl font-bold opacity-20 leading-none hover:opacity-30 transition-opacity duration-500">
-                04
-              </div>
-              <div className="mt-4">
-                <h2 className="text-2xl font-light uppercase tracking-widest group">
-                  <span className="bg-gradient-to-r from-teal-400 to-blue-600 bg-clip-text text-transparent group-hover:from-blue-600 group-hover:to-teal-400 transition-all duration-500">
-                    Contact
-                  </span>
-                </h2>
-                <div
-                  className={`w-12 h-0.5 ${
-                    isDarkMode ? "bg-teal-400" : "bg-teal-600"
-                  } mt-6 transform origin-left scale-x-0 animate-scale-x`}
-                ></div>
-              </div>
-            </div>
-          </SlideInLeft>
-
-          <SlideInRight delay={300}>
-            <div className="w-full lg:w-2/3 lg:pl-16">
-              <div
-                className={`${themeClasses.textSecondary} leading-relaxed space-y-6`}
-              >
-                {[
-                  { label: "Email", value: "john.asikire@developer.com" },
-                  { label: "Phone", value: "+256 (700) 123-456" },
-                  { label: "Location", value: "Kampala, Uganda" },
-                ].map((item, index) => (
-                  <FadeInSection key={item.label} delay={index * 100}>
-                    <div className="group hover:transform hover:translate-x-2 transition-all duration-300">
-                      <p className="font-semibold mb-2 group-hover:text-teal-400">
-                        {item.label}
-                      </p>
-                      <p className="group-hover:text-white">{item.value}</p>
-                    </div>
-                  </FadeInSection>
-                ))}
-
-                <FadeInSection delay={400}>
-                  <div className="group">
-                    <p className="font-semibold mb-2 group-hover:text-teal-400 transition-colors duration-300">
-                      Social Media
-                    </p>
-                    <div className="flex space-x-4">
-                      {[
-                        { icon: Twitter, label: "Twitter" },
-                        { icon: Linkedin, label: "LinkedIn" },
-                        { icon: Github, label: "GitHub" },
-                      ].map(({ icon: Icon, label }) => (
-                        <a
-                          key={label}
-                          href="#"
-                          className={`${themeClasses.accent} hover:text-white transition-all duration-300 flex items-center space-x-2 group/link`}
-                        >
-                          <Icon className="w-4 h-4 group-hover/link:animate-bounce" />
-                          <span className="group-hover/link:translate-x-1 transition-transform duration-300">
-                            {label}
-                          </span>
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-                </FadeInSection>
-              </div>
-            </div>
-          </SlideInRight>
+    // <FadeInSection>
+    <div>
+      <div className="flex flex-col lg:flex-row items-start">
+        {/* <SlideInLeft> */}
+        <div className="w-full lg:w-1/3 mb-12 lg:mb-0">
+          <div className="text-9xl font-bold opacity-20 leading-none hover:opacity-30 transition-opacity duration-500">
+            04
+          </div>
+          <div className="mt-4">
+            <h2 className="text-2xl font-light uppercase tracking-widest group">
+              <span className="bg-gradient-to-r from-teal-400 to-blue-600 bg-clip-text text-transparent group-hover:from-blue-600 group-hover:to-teal-400 transition-all duration-500">
+                Contact
+              </span>
+            </h2>
+            <div
+              className={`w-12 h-0.5 ${
+                isDarkMode ? "bg-teal-400" : "bg-teal-600"
+              } mt-6 transform origin-left scale-x-0 animate-scale-x`}
+            ></div>
+          </div>
         </div>
+        {/* </SlideInLeft> */}
+
+        {/* <SlideInRight delay={300}> */}
+        <div className="w-full lg:w-2/3 lg:pl-16">
+          <div
+            className={`${themeClasses.textSecondary} leading-relaxed space-y-6`}
+          >
+            {[
+              { label: "Email", value: "john.asikire@developer.com" },
+              { label: "Phone", value: "+256 (700) 123-456" },
+              { label: "Location", value: "Kampala, Uganda" },
+            ].map((item, index) => (
+              // <FadeInSection  delay={index * 100}>
+              <div
+                key={item.label}
+                className="group hover:transform hover:translate-x-2 transition-all duration-300"
+              >
+                <p className="font-semibold mb-2 group-hover:text-teal-400">
+                  {item.label}
+                </p>
+                <p className="group-hover:text-white">{item.value}</p>
+              </div>
+              // </FadeInSection>
+            ))}
+
+            {/* <FadeInSection delay={400}> */}
+            <div className="group">
+              <p className="font-semibold mb-2 group-hover:text-teal-400 transition-colors duration-300">
+                Social Media
+              </p>
+              <div className="flex space-x-4">
+                {[
+                  { icon: Twitter, label: "Twitter" },
+                  { icon: Linkedin, label: "LinkedIn" },
+                  { icon: Github, label: "GitHub" },
+                ].map(({ icon: Icon, label }) => (
+                  <a
+                    key={label}
+                    href="#"
+                    className={`${themeClasses.accent} hover:text-white transition-all duration-300 flex items-center space-x-2 group/link`}
+                  >
+                    <Icon className="w-4 h-4 group-hover/link:animate-bounce" />
+                    <span className="group-hover/link:translate-x-1 transition-transform duration-300">
+                      {label}
+                    </span>
+                  </a>
+                ))}
+              </div>
+            </div>
+            {/* </FadeInSection> */}
+          </div>
+        </div>
+        {/* </SlideInRight> */}
       </div>
-    </FadeInSection>
+    </div>
+    // </FadeInSection>
   );
 
   // Section array for mobile
@@ -776,11 +915,9 @@ const Portfolio = () => {
       <footer
         className={`w-full py-4 text-center text-xs ${themeClasses.cardBg} ${themeClasses.textSecondary} border-t ${themeClasses.border} relative z-20`}
       >
-        <FadeInSection>
-          <div className="transform hover:scale-105 transition-transform duration-300">
-            &copy; {new Date().getFullYear()} John Asikire. All rights reserved.
-          </div>
-        </FadeInSection>
+        <div className="transform hover:scale-105 transition-transform duration-300">
+          &copy; {new Date().getFullYear()} John Asikire. All rights reserved.
+        </div>
       </footer>
 
       {/* Global Styles */}
