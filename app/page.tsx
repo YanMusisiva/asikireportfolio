@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import {
   Sun,
   Moon,
@@ -172,7 +173,7 @@ const SkillCard = ({
   isDarkMode,
   progress,
 }: {
-  icon: any;
+  icon: React.ElementType;
   title: string;
   description: string;
   delay?: number;
@@ -356,6 +357,17 @@ const Portfolio = () => {
   const isLastCard = currentSection === sections.length - 1;
   const isScrollMode = isMobile && currentSection > sections.length - 1;
 
+  const handleNext = () => {
+    if (currentSection < sections.length - 1)
+      setCurrentSection(currentSection + 1);
+    else if (currentSection === sections.length - 1)
+      setCurrentSection(currentSection + 1);
+  };
+
+  const handlePrev = () => {
+    if (currentSection > 0) setCurrentSection(currentSection - 1);
+  };
+
   // Swipe support for mobile
   useEffect(() => {
     if (!isMobile || isScrollMode) return;
@@ -382,21 +394,17 @@ const Portfolio = () => {
       container.removeEventListener("touchstart", onTouchStart);
       container.removeEventListener("touchend", onTouchEnd);
     };
-  }, [currentSection, isMobile, isLastCard, isScrollMode]);
+  }, [
+    currentSection,
+    isMobile,
+    isLastCard,
+    isScrollMode,
+    handleNext,
+    handlePrev,
+  ]);
 
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode);
-  };
-
-  const handleNext = () => {
-    if (currentSection < sections.length - 1)
-      setCurrentSection(currentSection + 1);
-    else if (currentSection === sections.length - 1)
-      setCurrentSection(currentSection + 1);
-  };
-
-  const handlePrev = () => {
-    if (currentSection > 0) setCurrentSection(currentSection - 1);
   };
 
   // Section JSX avec animations
@@ -420,7 +428,7 @@ const Portfolio = () => {
       <div className="w-full lg:w-2/5 mb-12 lg:mb-0 relative z-10">
         <div className="relative group">
           <div className="absolute -inset-1 bg-gradient-to-r from-teal-400 to-blue-600 rounded-lg blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
-          <img
+          <Image
             src="johnasikire.jpg"
             alt="John Asikire"
             className="relative w-full max-w-md mx-auto lg:mx-0 rounded-full shadow-2xl transform transition-all duration-500 group-hover:scale-105"
@@ -569,7 +577,7 @@ const Portfolio = () => {
                 <div className="absolute -inset-4 bg-gradient-to-r from-teal-400/20 to-blue-600/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl"></div>
 
                 <div className="relative overflow-hidden rounded-lg mb-4 shadow-lg transform transition-all duration-500 group-hover:scale-105 group-hover:-rotate-1">
-                  <img
+                  <Image
                     src={book.cover}
                     alt={book.title}
                     className="w-full h-80 object-cover transform transition-transform duration-700 group-hover:scale-110"
@@ -641,7 +649,7 @@ const Portfolio = () => {
             className={`${themeClasses.textSecondary} leading-relaxed mb-8 relative`}
           >
             <div className="absolute -left-4 -top-2 text-6xl text-teal-400/20 font-serif">
-              "
+              &quot;
             </div>
             <p className="italic transform transition-all duration-500 hover:text-white pl-8">
               &quot;John&apos;s expertise in modern web development and his
@@ -651,12 +659,12 @@ const Portfolio = () => {
               shirtime.&quot;
             </p>
             <div className="absolute -right-4 -bottom-2 text-6xl text-teal-400/20 font-serif">
-              "
+              &quot;
             </div>
           </div>
           <div className="flex items-center space-x-4 group">
             <div className="w-12 h-12 rounded-full overflow-hidden transform transition-all duration-300 group-hover:scale-110">
-              <img
+              <Image
                 src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face"
                 alt="Reviewer"
                 className="w-full h-full object-cover"
