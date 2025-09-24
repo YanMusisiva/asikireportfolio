@@ -430,8 +430,9 @@ const Portfolio = () => {
           <Image
             src="/johnasikire.jpg"
             alt="John Asikire"
-            fill
-            className="rounded-full shadow-2xl transform transition-all duration-500 group-hover:scale-105"
+            width={400}
+            height={400}
+            className="relative w-full max-w-md mx-auto lg:mx-0 rounded-full shadow-2xl transform transition-all duration-500 group-hover:scale-105"
           />
         </div>
       </div>
@@ -580,7 +581,8 @@ const Portfolio = () => {
                   <Image
                     src={book.cover}
                     alt={book.title}
-                    fill
+                    width={300}
+                    height={400}
                     className="w-full h-80 object-cover transform transition-transform duration-700 group-hover:scale-110"
                   />
                   <div
@@ -668,7 +670,8 @@ const Portfolio = () => {
               <Image
                 src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face"
                 alt="Reviewer"
-                fill
+                width={50}
+                height={50}
                 className="w-full h-full object-cover"
               />
             </div>
