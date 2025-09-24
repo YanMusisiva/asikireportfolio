@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Sun,
   Moon,
@@ -8,7 +9,6 @@ import {
   ArrowRight,
   Github,
   Linkedin,
-  Twitter,
   Menu,
   X,
   Code,
@@ -17,8 +17,9 @@ import {
   Globe,
   Zap,
   Cpu,
-  ChevronDown,
-  Star,
+  Mail,
+  Phone,
+  MapPin,
 } from "lucide-react";
 
 const Loader = ({ isDarkMode }: { isDarkMode: boolean }) => (
@@ -239,7 +240,11 @@ const SkillCard = ({
         <p
           className={`text-xs leading-relaxed ${
             isDarkMode ? "text-gray-400" : "text-gray-600"
-          } group-hover:text-gray-300 transition-colors duration-300`}
+          } ${
+            isDarkMode
+              ? "group-hover:text-gray-300"
+              : "group-hover:text-gray-900"
+          } transition-colors duration-300`}
         >
           {description}
         </p>
@@ -423,70 +428,6 @@ const Portfolio = () => {
     if (currentSection > 0) setCurrentSection(currentSection - 1);
   };
 
-  // // Animation Components
-  // const FadeInSection = ({
-  //   children,
-  //   delay = 0,
-  // }: {
-  //   children: React.ReactNode;
-  //   delay?: number;
-  // }) => {
-  //   const [ref, isInView] = useInView();
-  //   return (
-  //     <div
-  //       ref={ref}
-  //       className={`transform transition-all duration-1000 ease-out ${
-  //         isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-  //       }`}
-  //       style={{ transitionDelay: `${delay}ms` }}
-  //     >
-  //       {children}
-  //     </div>
-  //   );
-  // };
-
-  // const SlideInLeft = ({
-  //   children,
-  //   delay = 0,
-  // }: {
-  //   children: React.ReactNode;
-  //   delay?: number;
-  // }) => {
-  //   const [ref, isInView] = useInView();
-  //   return (
-  //     <div
-  //       ref={ref}
-  //       className={`transform transition-all duration-800 ease-out ${
-  //         isInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12"
-  //       }`}
-  //       style={{ transitionDelay: `${delay}ms` }}
-  //     >
-  //       {children}
-  //     </div>
-  //   );
-  // };
-
-  // const SlideInRight = ({
-  //   children,
-  //   delay = 0,
-  // }: {
-  //   children: React.ReactNode;
-  //   delay?: number;
-  // }) => {
-  //   const [ref, isInView] = useInView();
-  //   return (
-  //     <div
-  //       ref={ref}
-  //       className={`transform transition-all duration-800 ease-out ${
-  //         isInView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-12"
-  //       }`}
-  //       style={{ transitionDelay: `${delay}ms` }}
-  //     >
-  //       {children}
-  //     </div>
-  //   );
-  // };
-
   // Section JSX avec animations
   const HeaderSection = (
     <div className="flex flex-col lg:flex-row items-start justify-between mb-20 relative overflow-hidden">
@@ -533,6 +474,22 @@ const Portfolio = () => {
           <p>
             <TypewriterText text="I help people and businesses turn ideas into websites, web apps, and mobile apps without endless delays" />
           </p>
+          <div>
+            <div className="flex justify-center space-x-6">
+              <a
+                href="https://linkedin.com"
+                className="w-12 h-12 bg-gray-600 rounded-full flex items-center justify-center hover:bg-gradient-to-r from-teal-400 to-blue-600 transition-colors group"
+              >
+                <Linkedin className="w-5 h-5 text-gray-300 group-hover:text-white" />
+              </a>
+              <a
+                href="https://twitter.com"
+                className="w-12 h-12 bg-gray-600 rounded-full flex items-center justify-center hover:bg-gradient-to-r from-teal-400 to-blue-600 transition-colors group"
+              >
+                <Mail className="w-5 h-5 text-gray-300 group-hover:text-white" />
+              </a>
+            </div>
+          </div>
           {/* </FadeInSection> */}
         </div>
       </div>
@@ -582,7 +539,7 @@ const Portfolio = () => {
             </p>
           </div>
           {/* Skills Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-8 lg:mt-12">
             {skills.map((skill, index) => (
               <SkillCard
                 key={skill.title}
@@ -607,7 +564,7 @@ const Portfolio = () => {
     <div className="mb-20">
       <div className="flex flex-col lg:flex-row items-start">
         {/* <SlideInLeft> */}
-        <div className="w-full lg:w-1/3 mb-12 lg:mb-0">
+        <div className="w-full mb-12 lg:mb-0 lg:w-1/3 ">
           <div className="text-9xl font-bold opacity-20 leading-none hover:opacity-30 transition-opacity duration-500">
             02
           </div>
@@ -685,7 +642,7 @@ const Portfolio = () => {
     <div className="mb-20">
       <div className="flex flex-col lg:flex-row items-start">
         {/* <SlideInLeft> */}
-        <div className="w-full lg:w-1/3 mb-12 lg:mb-0">
+        <div className="w-full mb-12 lg:w-1/3 lg:mb-0">
           <div className="text-9xl font-bold opacity-20 leading-none hover:opacity-30 transition-opacity duration-500">
             03
           </div>
@@ -778,49 +735,82 @@ const Portfolio = () => {
         {/* <SlideInRight delay={300}> */}
         <div className="w-full lg:w-2/3 lg:pl-16">
           <div
-            className={`${themeClasses.textSecondary} leading-relaxed space-y-6`}
+            className={`${themeClasses.textSecondary} leading-relaxed  grid md:grid-cols-2 gap-8 mb-12`}
           >
             {[
-              { label: "Email", value: "john.asikire@developer.com" },
-              { label: "Phone", value: "+256 (700) 123-456" },
-              { label: "Location", value: "Kampala, Uganda" },
-            ].map((item, index) => (
+              {
+                label: "Email",
+                value: "john.asikire@developer.com",
+                icon: Mail,
+              },
+              { label: "Phone", value: "+256 (700) 123-456", icon: Phone },
+              { label: "Location", value: "Kampala, Uganda", icon: MapPin },
+            ].map(({ label, value, icon: Icon }) => (
               // <FadeInSection  delay={index * 100}>
               <div
-                key={item.label}
-                className="group hover:transform hover:translate-x-2 transition-all duration-300"
+                key={label}
+                className={`group hover:transform hover:translate-x-2 transition-all duration-300 p-6 rounded-xl border ${
+                  isDarkMode ? "border-gray-300" : "border-gray-600"
+                }  ${
+                  isDarkMode
+                    ? "hover:border-teal-400/50"
+                    : "hover:border-teal-600"
+                }  transition-colors`}
               >
-                <p className="font-semibold mb-2 group-hover:text-teal-400">
-                  {item.label}
-                </p>
-                <p className="group-hover:text-white">{item.value}</p>
+                <Icon
+                  className={`w-8 h-8 ${
+                    isDarkMode ? "text-teal-400" : "text-teal-600"
+                  }  hover:scale-100 transition-transform duration-300  mx-auto mb-4`}
+                />
+                <h3
+                  className={`font-semibold mb-2 ${
+                    isDarkMode
+                      ? "group-hover:text-teal-400"
+                      : "group-hover:text-teal-600"
+                  }`}
+                >
+                  {label}
+                </h3>
+                <a
+                  href={value}
+                  className={`${
+                    isDarkMode
+                      ? "group-hover:text-gray-400"
+                      : "group-hover:text-gray-600"
+                  }`}
+                >
+                  {value}
+                </a>
               </div>
               // </FadeInSection>
             ))}
 
             {/* <FadeInSection delay={400}> */}
-            <div className="group">
-              <p className="font-semibold mb-2 group-hover:text-teal-400 transition-colors duration-300">
-                Social Media
-              </p>
-              <div className="flex space-x-4">
-                {[
-                  { icon: Twitter, label: "Twitter" },
-                  { icon: Linkedin, label: "LinkedIn" },
-                  { icon: Github, label: "GitHub" },
-                ].map(({ icon: Icon, label }) => (
-                  <a
-                    key={label}
-                    href="#"
-                    className={`${themeClasses.accent} hover:text-white transition-all duration-300 flex items-center space-x-2 group/link`}
+          </div>
+          <div className="group">
+            <div className="flex justify-center space-x-4">
+              {[
+                { icon: X, label: "Twitter", href: "#" },
+                { icon: Linkedin, label: "LinkedIn", href: "#" },
+                { icon: Github, label: "GitHub", href: "#" },
+              ].map(({ icon: Icon, label, href }) => (
+                <a
+                  key={label}
+                  href={href}
+                  className={`${
+                    themeClasses.accent
+                  }  transition-all duration-300 flex ${
+                    isDarkMode ? "hover:text-gray-300" : "hover:text-gray-900"
+                  } items-center space-x-2 group/link`}
+                >
+                  <Icon className="w-4 h-4 group-hover/link:animate-bounce" />
+                  <span
+                    className={`group-hover/link:translate-x-1  transition-transform duration-300`}
                   >
-                    <Icon className="w-4 h-4 group-hover/link:animate-bounce" />
-                    <span className="group-hover/link:translate-x-1 transition-transform duration-300">
-                      {label}
-                    </span>
-                  </a>
-                ))}
-              </div>
+                    {label}
+                  </span>
+                </a>
+              ))}
             </div>
             {/* </FadeInSection> */}
           </div>
@@ -830,6 +820,138 @@ const Portfolio = () => {
     </div>
     // </FadeInSection>
   );
+
+  const FancyNavButton = () => {
+    const [open, setOpen] = useState(false);
+    const [showMessage, setShowMessage] = useState(false);
+
+    // Détecter le scroll pour afficher le message
+    useEffect(() => {
+      const handleScroll = () => {
+        if (window.scrollY > 100) {
+          setShowMessage(true);
+        } else {
+          setShowMessage(false);
+        }
+      };
+      window.addEventListener("scroll", handleScroll);
+      return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
+    return (
+      <div>
+        {/* Bouton flottant */}
+        <button
+          onClick={() => setOpen(!open)}
+          className="fixed top-6 right-20 z-50 p-3 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg transition-all duration-500 hover:scale-125 hover:rotate-180"
+        >
+          {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </button>
+
+        {/* Navbar animée desktop */}
+        <AnimatePresence>
+          {open && (
+            <motion.nav
+              initial={{ width: 0, opacity: 0 }}
+              animate={{
+                width: "300px",
+                opacity: 1,
+                transition: { type: "spring", stiffness: 120 },
+              }}
+              exit={{
+                width: 0,
+                opacity: 0,
+                transition: { duration: 0.4 },
+              }}
+              className="hidden md:flex fixed top-6 right-32 h-12 bg-white shadow-lg rounded-xl items-center px-6 space-x-6 z-40 overflow-hidden"
+            >
+              <a
+                href="#"
+                className="text-sm font-semibold hover:text-indigo-600"
+              >
+                Accueil
+              </a>
+              <a
+                href="#"
+                className="text-sm font-semibold hover:text-indigo-600"
+              >
+                Services
+              </a>
+              <a
+                href="#"
+                className="text-sm font-semibold hover:text-indigo-600"
+              >
+                Portfolio
+              </a>
+              <a
+                href="#"
+                className="text-sm font-semibold hover:text-indigo-600"
+              >
+                Contact
+              </a>
+            </motion.nav>
+          )}
+        </AnimatePresence>
+
+        {/* Navbar mobile */}
+        <AnimatePresence>
+          {open && (
+            <motion.nav
+              initial={{ y: "-100%", opacity: 0 }}
+              animate={{
+                y: 0,
+                opacity: 1,
+                transition: { type: "spring", stiffness: 120 },
+              }}
+              exit={{
+                y: "-100%",
+                opacity: 0,
+                transition: { duration: 0.4 },
+              }}
+              className="md:hidden fixed top-0 right-0 w-full bg-white shadow-2xl flex flex-col items-center p-6 space-y-4 z-40"
+            >
+              <a
+                href="#"
+                className="text-lg font-semibold hover:text-indigo-600"
+              >
+                Accueil
+              </a>
+              <a
+                href="#"
+                className="text-lg font-semibold hover:text-indigo-600"
+              >
+                Services
+              </a>
+              <a
+                href="#"
+                className="text-lg font-semibold hover:text-indigo-600"
+              >
+                Portfolio
+              </a>
+              <a
+                href="#"
+                className="text-lg font-semibold hover:text-indigo-600"
+              >
+                Contact
+              </a>
+            </motion.nav>
+          )}
+        </AnimatePresence>
+
+        {/* Message affiché au scroll sur desktop */}
+        {showMessage && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            className="hidden md:block fixed top-20 right-20 bg-indigo-600 text-white px-4 py-2 rounded-lg shadow-lg"
+          >
+            🌟 Explorez le menu !
+          </motion.div>
+        )}
+      </div>
+    );
+  };
 
   // Section array for mobile
   const sectionComponents = [
@@ -850,6 +972,7 @@ const Portfolio = () => {
     >
       {/* Mouse spotlight effect */}
       <MouseSpotlight isDarkMode={isDarkMode} />
+      <FancyNavButton />
 
       {/* Theme Toggle */}
       <button
