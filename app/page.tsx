@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import {
@@ -357,18 +357,17 @@ const Portfolio = () => {
   const isLastCard = currentSection === sections.length - 1;
   const isScrollMode = isMobile && currentSection > sections.length - 1;
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     if (currentSection < sections.length - 1)
       setCurrentSection(currentSection + 1);
     else if (currentSection === sections.length - 1)
       setCurrentSection(currentSection + 1);
-  };
+  }, [currentSection, sections.length]);
 
-  const handlePrev = () => {
+  const handlePrev = useCallback(() => {
     if (currentSection > 0) setCurrentSection(currentSection - 1);
-  };
+  }, [currentSection]);
 
-  // Swipe support for mobile
   useEffect(() => {
     if (!isMobile || isScrollMode) return;
     const container = containerRef.current;
@@ -1080,3 +1079,6 @@ const Portfolio = () => {
 };
 
 export default Portfolio;
+// In React, useCallback is a built-in hook. You should import it from 'react' instead of defining it yourself.
+// Remove this function and add the following import at the top of your file if not already present:
+// import React, { useCallback } from "react";
