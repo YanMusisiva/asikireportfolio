@@ -85,35 +85,6 @@ const Loader = ({ isDarkMode }: { isDarkMode: boolean }) => (
   </div>
 );
 
-// // Hook pour l'intersection observer
-// const useInView = (threshold = 0.1) => {
-//   const [isInView, setIsInView] = useState(false);
-//   const ref = useRef<HTMLDivElement>(null);
-
-//   useEffect(() => {
-//     if (isInView) return;
-//     const observer = new IntersectionObserver(
-//       ([entry]) => {
-//         if (entry.isIntersecting) {
-//           setIsInView(true);
-//           observer.disconnect();
-//         }
-//       },
-//       { threshold }
-//     );
-
-//     if (ref.current) {
-//       observer.observe(ref.current);
-//     }
-
-//     return () => observer.disconnect();
-//   }, [isInView, threshold]);
-
-//   return [ref, isInView] as const;
-// };
-
-// Typewriter avec son de machine à écrire
-
 type TypewriterTextProps = {
   text: string; // texte simple
   delay?: number; // délai entre chaque lettre
@@ -430,7 +401,10 @@ const Portfolio = () => {
 
   // Section JSX avec animations
   const HeaderSection = (
-    <div className="flex flex-col lg:flex-row items-start justify-between mb-20 relative overflow-hidden">
+    <div
+      id="home"
+      className="flex flex-col lg:flex-row items-start justify-between mb-20 relative overflow-hidden"
+    >
       {/* Effet de parallax background */}
       <div className="absolute inset-0 opacity-5">
         <div
@@ -457,7 +431,7 @@ const Portfolio = () => {
 
       {/* Header Text */}
       {/* <SlideInRight delay={200}> */}
-      <div className="w-full lg:w-3/5 lg:pl-16 relative z-10">
+      <div id="header" className="w-full lg:w-3/5 lg:pl-16 relative z-10">
         <div className="mb-8">
           <h1 className="text-6xl lg:text-8xl font-light mb-2 transform transition-all duration-700 hover:scale-105">
             {showTypewriter ? <TypewriterText text="John" /> : "John"}
@@ -498,7 +472,7 @@ const Portfolio = () => {
   );
 
   const BiographySection = (
-    <div className="mb-20 relative">
+    <div id="aboutme" className="mb-20 relative">
       <div className="flex flex-col lg:flex-row items-start">
         {/* <SlideInLeft> */}
         <div className="w-full lg:w-1/3 mb-12 lg:mb-0">
@@ -527,7 +501,7 @@ const Portfolio = () => {
           >
             <p className="transform transition-all duration-500 hover:text-white">
               {" "}
-              Hello, I'm a John Asikire Passionate software developer with
+              Hello, I&apos;m a John Asikire Passionate software developer with
               expertise in modern web technologies and entrepreneurial spirit. I
               specialize in creating elegant solutions that bridge the gap
               between innovative ideas and practical implementation.
@@ -561,7 +535,7 @@ const Portfolio = () => {
 
   const BooksSection = (
     // <FadeInSection>
-    <div className="mb-20">
+    <div id="myprojects" className="mb-20">
       <div className="flex flex-col lg:flex-row items-start">
         {/* <SlideInLeft> */}
         <div className="w-full mb-12 lg:mb-0 lg:w-1/3 ">
@@ -639,7 +613,7 @@ const Portfolio = () => {
 
   const PressSection = (
     // <FadeInSection>
-    <div className="mb-20">
+    <div id="testimonials" className="mb-20">
       <div className="flex flex-col lg:flex-row items-start">
         {/* <SlideInLeft> */}
         <div className="w-full mb-12 lg:w-1/3 lg:mb-0">
@@ -670,11 +644,11 @@ const Portfolio = () => {
               "
             </div>
             <p className="italic transform transition-all duration-500 hover:text-white pl-8">
-              "John's expertise in modern web development and his
+              &quot;John&apos;s expertise in modern web development and his
               entrepreneurial mindset make him an invaluable asset. His ability
               to deliver innovative solutions while maintaining exceptional code
               quality is truly remarkable looking he has done with my e-commerce
-              shirtime."
+              shirtime.&quot;
             </p>
             <div className="absolute -right-4 -bottom-2 text-6xl text-teal-400/20 font-serif">
               "
@@ -710,7 +684,7 @@ const Portfolio = () => {
 
   const ContactSection = (
     // <FadeInSection>
-    <div>
+    <div id="contact">
       <div className="flex flex-col lg:flex-row items-start">
         {/* <SlideInLeft> */}
         <div className="w-full lg:w-1/3 mb-12 lg:mb-0">
@@ -790,7 +764,6 @@ const Portfolio = () => {
           <div className="group">
             <div className="flex justify-center space-x-4">
               {[
-                { icon: X, label: "Twitter", href: "#" },
                 { icon: Linkedin, label: "LinkedIn", href: "#" },
                 { icon: Github, label: "GitHub", href: "#" },
               ].map(({ icon: Icon, label, href }) => (
@@ -828,22 +801,23 @@ const Portfolio = () => {
     // Détecter le scroll pour afficher le message
     useEffect(() => {
       const handleScroll = () => {
-        if (window.scrollY > 100) {
+        if (window.scrollY < 100) {
           setShowMessage(true);
         } else {
-          setShowMessage(false);
+          setShowMessage(true);
         }
       };
       window.addEventListener("scroll", handleScroll);
-      return () => window.removeEventListener("scroll", handleScroll);
+      return () => {};
     }, []);
 
     return (
-      <div>
+      <div className="w-full">
         {/* Bouton flottant */}
+
         <button
           onClick={() => setOpen(!open)}
-          className="fixed top-6 right-20 z-50 p-3 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg transition-all duration-500 hover:scale-125 hover:rotate-180"
+          className="fixed top-3 right-20 z-50 p-3 rounded-full bg-gradient-to-r from-teal-400 to-blue-600 text-white shadow-lg transition-all duration-500 hover:scale-125 hover:rotate-180 group-hover:opacity-75"
         >
           {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
@@ -854,7 +828,7 @@ const Portfolio = () => {
             <motion.nav
               initial={{ width: 0, opacity: 0 }}
               animate={{
-                width: "300px",
+                width: "65vw",
                 opacity: 1,
                 transition: { type: "spring", stiffness: 120 },
               }}
@@ -863,28 +837,34 @@ const Portfolio = () => {
                 opacity: 0,
                 transition: { duration: 0.4 },
               }}
-              className="hidden md:flex fixed top-6 right-32 h-12 bg-white shadow-lg rounded-xl items-center px-6 space-x-6 z-40 overflow-hidden"
+              className="hidden md:flex fixed top-3 right-32 h-12 shadow-lg rounded-xl items-center px-6 space-x-6 z-40 md:justify-center"
             >
               <a
-                href="#"
+                href="#home"
                 className="text-sm font-semibold hover:text-indigo-600"
               >
-                Accueil
+                Home
               </a>
               <a
-                href="#"
+                href="#aboutme"
                 className="text-sm font-semibold hover:text-indigo-600"
               >
-                Services
+                About Me
               </a>
               <a
-                href="#"
+                href="#myprojects"
                 className="text-sm font-semibold hover:text-indigo-600"
               >
-                Portfolio
+                My Projects
               </a>
               <a
-                href="#"
+                href="#testimonials"
+                className="text-sm font-semibold hover:text-indigo-600"
+              >
+                Testimonials
+              </a>
+              <a
+                href="#contact"
                 className="text-sm font-semibold hover:text-indigo-600"
               >
                 Contact
@@ -893,61 +873,62 @@ const Portfolio = () => {
           )}
         </AnimatePresence>
 
-        {/* Navbar mobile */}
+        {/* Navbar mobile : pile de boutons */}
         <AnimatePresence>
           {open && (
-            <motion.nav
-              initial={{ y: "-100%", opacity: 0 }}
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
               animate={{
-                y: 0,
                 opacity: 1,
-                transition: { type: "spring", stiffness: 120 },
+                height: "auto",
+                transition: { type: "spring", stiffness: 150, damping: 20 },
               }}
               exit={{
-                y: "-100%",
                 opacity: 0,
-                transition: { duration: 0.4 },
+                height: 0,
+                transition: { duration: 0.3 },
               }}
-              className="md:hidden fixed top-0 right-0 w-full bg-white shadow-2xl flex flex-col items-center p-6 space-y-4 z-40"
+              className="md:hidden fixed top-20 right-6 flex flex-col w-40 space-y-1 shadow-lg rounded-xl overflow-hidden z-40"
             >
               <a
-                href="#"
-                className="text-lg font-semibold hover:text-indigo-600"
+                href="#home"
+                className="w-full py-3 text-center font-semibold text-gray-800 hover:bg-indigo-100 hover:text-indigo-600 transition"
               >
-                Accueil
+                Home
               </a>
               <a
-                href="#"
-                className="text-lg font-semibold hover:text-indigo-600"
+                href="#aboutme"
+                className="w-full py-3 text-center font-semibold text-gray-800 hover:bg-indigo-100 hover:text-indigo-600 transition"
               >
-                Services
+                About Me
               </a>
               <a
-                href="#"
-                className="text-lg font-semibold hover:text-indigo-600"
+                href="#myprojects"
+                className="w-full py-3 text-center font-semibold text-gray-800 hover:bg-indigo-100 hover:text-indigo-600 transition"
               >
-                Portfolio
+                My Projects
               </a>
               <a
-                href="#"
-                className="text-lg font-semibold hover:text-indigo-600"
+                href="#testimonials"
+                className="w-full py-3 text-center font-semibold text-gray-800 hover:bg-indigo-100 hover:text-indigo-600 transition"
+              >
+                Testimonials
+              </a>
+              <a
+                href="#contact"
+                className="w-full py-3 text-center font-semibold text-gray-800 hover:bg-indigo-100 hover:text-indigo-600 transition"
               >
                 Contact
               </a>
-            </motion.nav>
+            </motion.div>
           )}
         </AnimatePresence>
 
         {/* Message affiché au scroll sur desktop */}
         {showMessage && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            className="hidden md:block fixed top-20 right-20 bg-indigo-600 text-white px-4 py-2 rounded-lg shadow-lg"
-          >
+          <div className="hidden md:block fixed top-20 right-20 bg-indigo-600 text-white px-4 py-2 rounded-lg shadow-lg">
             🌟 Explorez le menu !
-          </motion.div>
+          </div>
         )}
       </div>
     );
@@ -977,7 +958,7 @@ const Portfolio = () => {
       {/* Theme Toggle */}
       <button
         onClick={toggleTheme}
-        className={`fixed top-6 right-6 z-50 p-3 rounded-full ${themeClasses.cardBg} ${themeClasses.border} border shadow-lg transition-all duration-500 hover:scale-125 hover:rotate-180 group`}
+        className={`fixed top-3 right-6 z-50 p-3 rounded-full ${themeClasses.cardBg} ${themeClasses.border} border shadow-lg transition-all duration-500 hover:scale-125 hover:rotate-180 group`}
       >
         {isDarkMode ? (
           <Sun className="w-6 h-6 text-yellow-500 group-hover:animate-pulse" />
