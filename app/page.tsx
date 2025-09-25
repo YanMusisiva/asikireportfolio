@@ -436,6 +436,7 @@ const Portfolio = () => {
             alt="John Asikire"
             width={400}
             height={400}
+            priority
             className="relative w-full max-w-md mx-auto lg:mx-0 rounded-full shadow-2xl transform transition-all duration-500 group-hover:scale-105"
           />
         </div>

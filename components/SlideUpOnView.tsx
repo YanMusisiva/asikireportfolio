@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-
 import { ReactNode } from "react";
 
 interface SlideUpOnViewProps {
@@ -14,16 +13,16 @@ export default function SlideUpOnView({
   className = "",
 }: SlideUpOnViewProps) {
   const [isVisible, setIsVisible] = useState(false);
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
+      (entries, obs) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setTimeout(() => setIsVisible(true), delay);
-          } else {
-            setIsVisible(false);
+            // On arrête d'observer après la première apparition
+            obs.unobserve(entry.target);
           }
         });
       },
