@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import SlideUpOnView from "@/components/SlideUpOnView";
 import {
   Sun,
   Moon,
@@ -189,7 +190,7 @@ const SkillCard = ({
         isDarkMode ? "bg-gray-800/50" : "bg-white/50"
       } backdrop-blur-sm border ${
         isDarkMode ? "border-gray-700" : "border-gray-200"
-      } hover:border-teal-400/50`}
+      } max-md:border-teal-400/50 md:hover:border-teal-400/50`}
       style={{ transitionDelay: `${delay}ms` }}
     >
       {/* Animated background */}
@@ -224,7 +225,7 @@ const SkillCard = ({
         {/* Progress bar */}
         <div className="mt-3 h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
           <div
-            className="h-full bg-gradient-to-r from-teal-400 to-blue-600 rounded-full transform origin-left scale-x-0 group-hover:scale-x-88 transition-transform duration-1000 ease-out"
+            className="h-full bg-gradient-to-r from-teal-400 to-blue-600 rounded-full transform origin-left md:scale-x-0 max-md:scale-x-88 md:group-hover:scale-x-88 transition-transform duration-1000 ease-out"
             style={{ transform: `scaleX(${progress})` }}
           />
         </div>
@@ -313,25 +314,28 @@ const Portfolio = () => {
 
   const books = [
     {
-      title: "The Immortalist",
+      title: "Shirtime Shop",
       subtitle: "John Asikire",
       cover:
         "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=300&h=450&fit=crop",
-      genre: "Philosophy",
+      genre: "Clothes Shop",
+      link: "https://shirtime.vercel.app",
     },
     {
-      title: "Digital Roots",
+      title: "Listen Method",
       subtitle: "John Asikire",
       cover:
         "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=300&h=450&fit=crop",
-      genre: "Technology",
+      genre: "Learning languages with listen method",
+      link: "https://listenmethod.vercel.app",
     },
     {
-      title: "Code & Coffee",
+      title: "AutoDidacte+(Ongoing Project)",
       subtitle: "John Asikire",
       cover:
         "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=300&h=450&fit=crop",
-      genre: "Programming",
+      genre: "Free courses from best free videos online",
+      link: "https://asclientmaitrise.vercel.app",
     },
   ];
 
@@ -443,33 +447,34 @@ const Portfolio = () => {
       <div id="header" className="w-full lg:w-3/5 lg:pl-16 relative z-10">
         <div className="mb-8">
           <h1 className="text-6xl lg:text-8xl font-light mb-2 transform transition-all duration-700 hover:scale-105">
-            {showTypewriter ? <TypewriterText text="John" /> : "John"}
+            John
           </h1>
           <h1 className="text-6xl lg:text-8xl font-bold transform transition-all duration-700 hover:scale-105">
-            {showTypewriter ? <TypewriterText text="Asikire" /> : "Asikire"}
+            Asikire
           </h1>
           {/* <FadeInSection delay={1000}> */}
           <p
             className={`text-sm uppercase tracking-widest mt-4 ${themeClasses.accent} animate-pulse`}
           >
-            <TypewriterText text="Software Developer and Entrepreneur" />
+            Software Developer and Entrepreneur
           </p>
-          <p>
-            <TypewriterText text="I help people and businesses turn ideas into websites, web apps, and mobile apps without endless delays" />
+          <p className="mt-2 italic transform transition-all duration-500 hover:text-white ">
+            I help people and businesses turn ideas into websites, web apps, and
+            mobile apps without endless delays.
           </p>
-          <div>
-            <div className="flex justify-center space-x-6">
+          <div className="mt-3">
+            <div className="flex justify-center space-x-6 ">
               <a
-                href="https://linkedin.com"
-                className="w-12 h-12 bg-gray-600 rounded-full flex items-center justify-center hover:bg-gradient-to-r from-teal-400 to-blue-600 transition-colors group"
+                href="https://www.linkedin.com/in/john-asikire"
+                className="w-12 h-12 bg-gray-600 rounded-full flex items-center justify-center bg-gradient-to-r from-teal-400 to-blue-600 transition-colors group"
               >
-                <Linkedin className="w-5 h-5 text-gray-300 group-hover:text-white" />
+                <Linkedin className="w-5 h-5 text-gray-300 text-white" />
               </a>
               <a
-                href="https://twitter.com"
-                className="w-12 h-12 bg-gray-600 rounded-full flex items-center justify-center hover:bg-gradient-to-r from-teal-400 to-blue-600 transition-colors group"
+                href="mailto:rockfordjohn317@gmail.com"
+                className="w-12 h-12 bg-gray-600 rounded-full flex items-center justify-center bg-gradient-to-r from-teal-400 to-blue-600 transition-colors group"
               >
-                <Mail className="w-5 h-5 text-gray-300 group-hover:text-white" />
+                <Mail className="w-5 h-5 text-gray-300 text-white" />
               </a>
             </div>
           </div>
@@ -510,29 +515,29 @@ const Portfolio = () => {
           >
             <p className="transform transition-all duration-500 hover:text-white">
               {" "}
-              Hello, I&apos;m a John Asikire Passionate software developer with
-              expertise in modern web technologies and entrepreneurial spirit. I
-              specialize in creating elegant solutions that bridge the gap
+              Hello, I&apos;m John Asikire, a software developer with expertise
+              in modern web and mobile technologies with entrepreneurial spirit.
+              I specialize in creating elegant solutions that bridge the gap
               between innovative ideas and practical implementation.
             </p>
             <p className="transform transition-all duration-500 hover:text-white">
               With a focus on user experience and clean code architecture, I
-              help businesses transform their digital presence through
+              help businesses transform their digital services through
               cutting-edge applications and strategic technology consulting.
             </p>
           </div>
           {/* Skills Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-8 lg:mt-12">
             {skills.map((skill, index) => (
-              <SkillCard
-                key={skill.title}
-                icon={skill.icon}
-                title={skill.title}
-                description={skill.description}
-                delay={index * 100}
-                isDarkMode={isDarkMode}
-                progress={skill.progress}
-              />
+              <SlideUpOnView key={index} delay={index * 100}>
+                <SkillCard
+                  icon={skill.icon}
+                  title={skill.title}
+                  description={skill.description}
+                  isDarkMode={isDarkMode}
+                  progress={skill.progress}
+                />
+              </SlideUpOnView>
             ))}
           </div>
         </div>
@@ -575,41 +580,53 @@ const Portfolio = () => {
                 className="text-center group cursor-pointer relative"
               >
                 {/* Glow effect background */}
-                <div className="absolute -inset-4 bg-gradient-to-r from-teal-400/20 to-blue-600/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl"></div>
+                <div className="absolute -inset-4 bg-gradient-to-r from-teal-400/20 to-blue-600/20 rounded-xl md:opacity-0 max-md:opacity md:group-hover:opacity-100 transition-opacity duration-500 blur-xl"></div>
 
-                <div className="relative overflow-hidden rounded-lg mb-4 shadow-lg transform transition-all duration-500 group-hover:scale-105 group-hover:-rotate-1">
+                <div className="relative overflow-hidden rounded-lg mb-4 shadow-lg transform transition-all duration-500 max-md:scale-105 max-md:-rotate-1 md:group-hover:scale-105 md:group-hover:-rotate-1">
                   <Image
                     src={book.cover}
                     alt={book.title}
                     width={300}
                     height={400}
-                    className="w-full h-80 object-cover transform transition-transform duration-700 group-hover:scale-110"
+                    className="w-full h-80 object-cover transform transition-transform duration-700 max-md:scale-110 md:group-hover:scale-110"
                   />
                   <div
                     className={`absolute inset-0 bg-gradient-to-t ${
                       isDarkMode
                         ? "from-black/80 via-transparent to-teal-400/20"
                         : "from-white/80 via-transparent to-teal-400/20"
-                    } opacity-0 group-hover:opacity-100 transition-all duration-500`}
+                    } opacity-0 max-md:opacity-100 md:group-hover:opacity-100 transition-all duration-500`}
                   >
                     <div className="absolute bottom-4 left-4 right-4">
                       <div className="flex space-x-3">
-                        <div className="w-8 h-8 bg-teal-400 rounded-full flex items-center justify-center transform hover:scale-110 transition-transform cursor-pointer">
-                          <Github className="w-4 h-4 text-white" />
+                        <div className="w-8 h-8 bg-teal-400 rounded-full flex items-center justify-center transform max-md:scale-110 md:hover:scale-110 transition-transform cursor-pointer">
+                          <a
+                            href="https://github.com/YanMusisiva"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <Github className="w-4 h-4 text-white" />
+                          </a>
                         </div>
-                        <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center transform hover:scale-110 transition-transform cursor-pointer">
-                          <ArrowRight className="w-4 h-4 text-white" />
+                        <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center transform max-md:scale-110 md:hover:scale-110 transition-transform cursor-pointer">
+                          <a
+                            href={book.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <ArrowRight className="w-4 h-4 text-white" />
+                          </a>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
                 <p
-                  className={`text-xs uppercase tracking-wide mb-2 ${themeClasses.accent} group-hover:animate-pulse`}
+                  className={`text-xs uppercase tracking-wide mb-2 ${themeClasses.accent} max-md:animate-pulse  md:group-hover:animate-pulse`}
                 >
                   {book.genre}
                 </p>
-                <h3 className="text-lg font-bold uppercase tracking-wide transform transition-all duration-300 group-hover:text-teal-400">
+                <h3 className="text-lg font-bold uppercase tracking-wide transform transition-all duration-300 max-md:text-teal-400 md:group-hover:text-teal-400">
                   {book.title}
                 </h3>
               </div>
@@ -634,7 +651,7 @@ const Portfolio = () => {
           <div className="mt-4">
             <h2 className="text-2xl font-light uppercase tracking-widest group">
               <span className="bg-gradient-to-r from-teal-400 to-blue-600 bg-clip-text text-transparent group-hover:from-blue-600 group-hover:to-teal-400 transition-all duration-500">
-                Testimonials
+                Testimonial
               </span>
             </h2>
             <div
@@ -657,9 +674,9 @@ const Portfolio = () => {
             <p className="italic transform transition-all duration-500 hover:text-white pl-8">
               &quot;John&apos;s expertise in modern web development and his
               entrepreneurial mindset make him an invaluable asset. His ability
-              to deliver innovative solutions while maintaining exceptional code
-              quality is truly remarkable looking he has done with my e-commerce
-              shirtime.&quot;
+              to deliver innovative solutions while maintaining exceptional
+              quality on design and features is truly remarkable looking he has
+              done with my e-commerce shirtime.&quot;
             </p>
             <div className="absolute -right-4 -bottom-2 text-6xl text-teal-400/20 font-serif">
               &quot;
@@ -677,15 +694,15 @@ const Portfolio = () => {
             </div>
             <div>
               <p className="font-semibold text-sm group-hover:text-teal-400 transition-colors duration-300">
-                John Charlton
+                Jesper Kyose
               </p>
               <p className={`text-xs ${themeClasses.textSecondary}`}>
-                Tech Lead
+                Shirtime Shop
               </p>
             </div>
             <div className="flex space-x-2 ml-auto">
-              <ArrowLeft className="w-5 h-5 cursor-pointer hover:scale-125 hover:text-teal-400 transition-all duration-300 hover:animate-bounce" />
-              <ArrowRight className="w-5 h-5 cursor-pointer hover:scale-125 hover:text-teal-400 transition-all duration-300 hover:animate-bounce" />
+              {/* <ArrowLeft className="w-5 h-5 cursor-pointer hover:scale-125 hover:text-teal-400 transition-all duration-300 hover:animate-bounce" />
+              <ArrowRight className="w-5 h-5 cursor-pointer hover:scale-125 hover:text-teal-400 transition-all duration-300 hover:animate-bounce" /> */}
             </div>
           </div>
         </div>
@@ -727,33 +744,39 @@ const Portfolio = () => {
             {[
               {
                 label: "Email",
-                value: "john.asikire@developer.com",
+                value: "johnitehero@gmail.com",
                 icon: Mail,
               },
-              { label: "Phone", value: "+256 (700) 123-456", icon: Phone },
+              { label: "Phone", value: "+256 787 531-919", icon: Phone },
               { label: "Location", value: "Kampala, Uganda", icon: MapPin },
             ].map(({ label, value, icon: Icon }) => (
               // <FadeInSection  delay={index * 100}>
               <div
                 key={label}
-                className={`group hover:transform hover:translate-x-2 transition-all duration-300 p-6 rounded-xl border ${
-                  isDarkMode ? "border-gray-300" : "border-gray-600"
+                className={`group hover:transform max-md:translate-x-2 md:hover:translate-x-2 transition-all duration-300 p-6 rounded-xl border ${
+                  isDarkMode ? "md:border-gray-300" : "md:border-gray-600"
                 }  ${
                   isDarkMode
-                    ? "hover:border-teal-400/50"
-                    : "hover:border-teal-600"
-                }  transition-colors`}
+                    ? "md:hover:border-teal-400/50"
+                    : "md:hover:border-teal-600"
+                } ${
+                  isDarkMode
+                    ? "max-md:border-teal-400/50"
+                    : "max-md:border-teal-600"
+                } transition-colors`}
               >
                 <Icon
                   className={`w-8 h-8 ${
                     isDarkMode ? "text-teal-400" : "text-teal-600"
-                  }  hover:scale-100 transition-transform duration-300  mx-auto mb-4`}
+                  }  max-md:scale-100 md:hover:scale-100 transition-transform duration-300  mx-auto mb-4`}
                 />
                 <h3
                   className={`font-semibold mb-2 ${
                     isDarkMode
-                      ? "group-hover:text-teal-400"
-                      : "group-hover:text-teal-600"
+                      ? "md:group-hover:text-teal-400"
+                      : "md:group-hover:text-teal-600"
+                  } ${
+                    isDarkMode ? "max-md:text-teal-400" : "max-md:text-teal-600"
                   }`}
                 >
                   {label}
@@ -762,8 +785,10 @@ const Portfolio = () => {
                   href={value}
                   className={`${
                     isDarkMode
-                      ? "group-hover:text-gray-400"
-                      : "group-hover:text-gray-600"
+                      ? "md:group-hover:text-gray-400"
+                      : "md:group-hover:text-gray-600"
+                  } ${
+                    isDarkMode ? "max-md:text-gray-400" : "max-md:text-gray-600"
                   }`}
                 >
                   {value}
@@ -777,8 +802,16 @@ const Portfolio = () => {
           <div className="group">
             <div className="flex justify-center space-x-4">
               {[
-                { icon: Linkedin, label: "LinkedIn", href: "#" },
-                { icon: Github, label: "GitHub", href: "#" },
+                {
+                  icon: Linkedin,
+                  label: "LinkedIn",
+                  href: "https://www.linkedin.com/in/john-asikire",
+                },
+                {
+                  icon: Github,
+                  label: "GitHub",
+                  href: "https://github.com/rockfordjohn317@gmail.com",
+                },
               ].map(({ icon: Icon, label, href }) => (
                 <a
                   key={label}
@@ -830,7 +863,7 @@ const Portfolio = () => {
 
         <button
           onClick={() => setOpen(!open)}
-          className="fixed top-3 right-20 z-50 p-3 rounded-full bg-gradient-to-r from-teal-400 to-blue-600 text-white shadow-lg transition-all duration-500 hover:scale-125 hover:rotate-180 group-hover:opacity-75"
+          className="fixed top-3 right-20 z-50 p-3 rounded-full bg-gradient-to-r from-teal-400 to-blue-600 text-white shadow-lg transition-all duration-500 active:scale-125 active:rotate-180 md:active:none hover:scale-125 hover:rotate-180 group-hover:opacity-75"
         >
           {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
@@ -854,31 +887,31 @@ const Portfolio = () => {
             >
               <a
                 href="#home"
-                className="text-sm font-semibold hover:text-indigo-600"
+                className="text-sm md:text-md font-semibold hover:text-teal-600"
               >
                 Home
               </a>
               <a
                 href="#aboutme"
-                className="text-sm font-semibold hover:text-indigo-600"
+                className="text-sm md:text-md font-semibold hover:text-teal-600"
               >
                 About Me
               </a>
               <a
                 href="#myprojects"
-                className="text-sm font-semibold hover:text-indigo-600"
+                className="text-sm md:text-md font-semibold hover:text-teal-600"
               >
                 My Projects
               </a>
               <a
                 href="#testimonials"
-                className="text-sm font-semibold hover:text-indigo-600"
+                className="text-sm md:text-md font-semibold hover:text-teal-600"
               >
                 Testimonials
               </a>
               <a
                 href="#contact"
-                className="text-sm font-semibold hover:text-indigo-600"
+                className="text-sm md:text-md font-semibold hover:text-teal-600"
               >
                 Contact
               </a>
@@ -905,31 +938,41 @@ const Portfolio = () => {
             >
               <a
                 href="#home"
-                className="w-full py-3 text-center font-semibold text-gray-800 hover:bg-indigo-100 hover:text-indigo-600 transition"
+                className={`w-full py-3 text-center font-semibold ${
+                  isDarkMode ? "text-white" : "text-gray-800"
+                }  hover:bg-indigo-100 hover:text-teal-600 transition`}
               >
                 Home
               </a>
               <a
                 href="#aboutme"
-                className="w-full py-3 text-center font-semibold text-gray-800 hover:bg-indigo-100 hover:text-indigo-600 transition"
+                className={`w-full py-3 text-center font-semibold ${
+                  isDarkMode ? "text-white" : "text-gray-800"
+                }  hover:bg-indigo-100 hover:text-teal-600 transition`}
               >
                 About Me
               </a>
               <a
                 href="#myprojects"
-                className="w-full py-3 text-center font-semibold text-gray-800 hover:bg-indigo-100 hover:text-indigo-600 transition"
+                className={`w-full py-3 text-center font-semibold ${
+                  isDarkMode ? "text-white" : "text-gray-800"
+                }  hover:bg-indigo-100 hover:text-teal-600 transition`}
               >
                 My Projects
               </a>
               <a
                 href="#testimonials"
-                className="w-full py-3 text-center font-semibold text-gray-800 hover:bg-indigo-100 hover:text-indigo-600 transition"
+                className={`w-full py-3 text-center font-semibold ${
+                  isDarkMode ? "text-white" : "text-gray-800"
+                }  hover:bg-indigo-100 hover:text-teal-600 transition`}
               >
                 Testimonials
               </a>
               <a
                 href="#contact"
-                className="w-full py-3 text-center font-semibold text-gray-800 hover:bg-indigo-100 hover:text-indigo-600 transition"
+                className={`w-full py-3 text-center font-semibold ${
+                  isDarkMode ? "text-white" : "text-gray-800"
+                }  hover:bg-indigo-100 hover:text-teal-600 transition`}
               >
                 Contact
               </a>
@@ -940,7 +983,7 @@ const Portfolio = () => {
         {/* Message affiché au scroll sur desktop */}
         {showMessage && (
           <div className="hidden md:block fixed top-20 right-20 bg-indigo-600 text-white px-4 py-2 rounded-lg shadow-lg">
-            🌟 Explorez le menu !
+            🌟 Take a look !
           </div>
         )}
       </div>
@@ -971,7 +1014,7 @@ const Portfolio = () => {
       {/* Theme Toggle */}
       <button
         onClick={toggleTheme}
-        className={`fixed top-3 right-6 z-50 p-3 rounded-full ${themeClasses.cardBg} ${themeClasses.border} border shadow-lg transition-all duration-500 hover:scale-125 hover:rotate-180 group`}
+        className={`fixed top-3 right-6 z-50 p-3 rounded-full ${themeClasses.cardBg} ${themeClasses.border} border shadow-lg transition-all duration-500 active:scale-125 active:rotate-180 md:active:none hover:scale-125 hover:rotate-180 group`}
       >
         {isDarkMode ? (
           <Sun className="w-6 h-6 text-yellow-500 group-hover:animate-pulse" />
@@ -982,7 +1025,7 @@ const Portfolio = () => {
 
       {/* Navigation (mobile horizontal) */}
       {isMobile && !isScrollMode && (
-        <div className="fixed bottom-6 left-0 right-0 z-40 flex justify-center items-center space-x-8">
+        <div className="fixed bottom-12 left-0 right-0 z-40 flex justify-center items-center space-x-8">
           <button
             onClick={handlePrev}
             disabled={currentSection === 0}
@@ -1030,10 +1073,16 @@ const Portfolio = () => {
 
       {/* Footer */}
       <footer
-        className={`w-full py-4 text-center text-xs ${themeClasses.cardBg} ${themeClasses.textSecondary} border-t ${themeClasses.border} relative z-20`}
+        className={`w-full py-2 flex flex-col space-y-1 text-center text-xs ${themeClasses.cardBg} ${themeClasses.textSecondary} border-t ${themeClasses.border} relative z-20`}
       >
-        <div className="transform hover:scale-105 transition-transform duration-300">
+        <div className="text-sm md:text-md transform hover:scale-105 transition-transform duration-300">
           &copy; {new Date().getFullYear()} John Asikire. All rights reserved.
+        </div>
+        <div>
+          Made by{" "}
+          <a className="text-teal-600" href="mailto:rockfordjohn317@gmail.com">
+            John Asikire
+          </a>
         </div>
       </footer>
 
