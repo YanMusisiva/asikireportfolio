@@ -16,6 +16,8 @@ export default function SlideUpOnView({
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    const element = ref.current; // copie la valeur du ref
+    if (!element) return;
     const observer = new IntersectionObserver(
       (entries, obs) => {
         entries.forEach((entry) => {
@@ -29,12 +31,12 @@ export default function SlideUpOnView({
       { threshold: 0.1 }
     );
 
-    if (ref.current) {
-      observer.observe(ref.current);
+    if (element) {
+      observer.observe(element);
     }
 
     return () => {
-      if (ref.current) observer.unobserve(ref.current);
+      if (element) observer.unobserve(element);
     };
   }, [delay]);
 

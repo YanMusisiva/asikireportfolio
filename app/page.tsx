@@ -451,7 +451,7 @@ const Portfolio = () => {
             John
           </h1>
           <h1 className="text-6xl lg:text-8xl font-bold transform transition-all duration-700 hover:scale-105">
-            Asikire
+            {showTypewriter ? <TypewriterText text="Asikire" /> : "Asikire"}
           </h1>
           {/* <FadeInSection delay={1000}> */}
           <p
