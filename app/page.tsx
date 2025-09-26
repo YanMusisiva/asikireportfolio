@@ -323,24 +323,21 @@ const Portfolio = () => {
     {
       title: "Shirtime Shop",
       subtitle: "John Asikire",
-      cover:
-        "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=300&h=450&fit=crop",
+      cover: "/shirtime.png",
       genre: "Clothes Shop",
       link: "https://shirtime.vercel.app",
     },
     {
       title: "Listen Method",
       subtitle: "John Asikire",
-      cover:
-        "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=300&h=450&fit=crop",
+      cover: "/listenmethod.jpg",
       genre: "Learning languages with listen method",
       link: "https://listenmethod.vercel.app",
     },
     {
       title: "AutoDidacte+(Ongoing Project)",
       subtitle: "John Asikire",
-      cover:
-        "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=300&h=450&fit=crop",
+      cover: "/autodidacte.png",
       genre: "Free courses from best free videos online",
       link: "https://asclientmaitrise.vercel.app",
     },
@@ -693,7 +690,7 @@ const Portfolio = () => {
           <div className="flex items-center space-x-4 group">
             <div className="w-12 h-12 rounded-full overflow-hidden transform transition-all duration-300 group-hover:scale-110">
               <Image
-                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face"
+                src="/jesper.jpg"
                 alt="Reviewer"
                 width={50}
                 height={50}
@@ -790,7 +787,7 @@ const Portfolio = () => {
                   {label}
                 </h3>
                 <a
-                  href={value}
+                  href="#contact"
                   className={`${
                     isDarkMode
                       ? "md:group-hover:text-gray-400"
