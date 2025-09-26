@@ -245,9 +245,16 @@ const Portfolio = () => {
 
   // Loader simulation
   useEffect(() => {
+    const headerEl = document.querySelector("#header");
     const timer = setTimeout(() => {
       setLoading(false);
-      setTimeout(() => setShowTypewriter(true), 500);
+      setTimeout(() => {
+        if (headerEl) {
+          headerEl.scrollIntoView({ behavior: "smooth" });
+        }
+
+        setShowTypewriter(true);
+      }, 500);
     }, 2000);
     return () => clearTimeout(timer);
   }, []);
